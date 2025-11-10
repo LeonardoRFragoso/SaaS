@@ -49,11 +49,27 @@ export interface DashboardData {
   metadata?: any
 }
 
+export interface PaginatedDashboards {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Dashboard[]
+}
+
 export const dashboardService = {
   // Listar dashboards
-  async list(): Promise<Dashboard[]> {
+  async list(): Promise<PaginatedDashboards> {
     const response = await api.get('/dashboards/')
-    return response.data
+    if (response.data?.results) {
+      return response.data
+    }
+
+    return {
+      count: Array.isArray(response.data) ? response.data.length : 0,
+      next: null,
+      previous: null,
+      results: Array.isArray(response.data) ? response.data : [],
+    }
   },
 
   // Obter um dashboard

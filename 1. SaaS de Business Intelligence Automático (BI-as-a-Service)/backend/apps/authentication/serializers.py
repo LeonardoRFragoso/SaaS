@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from django.utils import timezone
+from datetime import timedelta
 from apps.users.models import User
 from apps.users.serializers import UserSerializer
 
@@ -57,25 +59,34 @@ class RegisterSerializer(serializers.ModelSerializer):
         from apps.organizations.models import Organization
         from django.utils.text import slugify
         import uuid
-        from datetime import datetime, timedelta
         
         validated_data.pop('password_confirm')
         password = validated_data.pop('password')
         organization_name = validated_data.pop('organization_name', None)
+        email = validated_data.get('email')
+        full_name = validated_data.get('full_name')
         
         # Create organization if name provided
         organization = None
         if organization_name:
-            slug = slugify(organization_name)
-            if Organization.objects.filter(slug=slug).exists():
-                slug = f"{slug}-{uuid.uuid4().hex[:6]}"
-            
-            organization = Organization.objects.create(
-                name=organization_name,
-                slug=slug,
-                plan='trial',
-                trial_ends_at=datetime.now() + timedelta(days=14)
-            )
+            organization_name = organization_name.strip()
+        if not organization_name:
+            fallback_name = full_name or (email.split('@')[0] if email else 'Minha Organização')
+            organization_name = f"Organização de {fallback_name}".strip()
+        
+        base_slug = slugify(organization_name) or slugify(email.split('@')[0] if email else '') or 'organizacao'
+        slug = base_slug
+        while Organization.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{uuid.uuid4().hex[:6]}"
+
+        organization = Organization.objects.create(
+            name=organization_name,
+            slug=slug,
+        )
+        organization.set_plan_limits('free')
+        organization.trial_ends_at = timezone.now() + timedelta(days=14)
+        organization.subscription_active = True
+        organization.save(update_fields=['trial_ends_at', 'subscription_active'])
         
         # Create user
         user = User.objects.create_user(

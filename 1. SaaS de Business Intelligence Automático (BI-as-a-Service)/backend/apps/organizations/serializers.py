@@ -16,7 +16,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
             'address', 'city', 'state', 'zip_code', 'country',
             'industry', 'company_size', 'plan', 'trial_ends_at',
             'subscription_active', 'max_users', 'max_dashboards',
-            'max_datasources', 'max_ai_queries', 'settings',
+            'max_datasources', 'max_data_rows', 'max_ai_insights_per_month', 'settings',
             'user_count', 'dashboard_count', 'datasource_count',
             'created_at', 'updated_at', 'is_active'
         )
@@ -43,7 +43,10 @@ class OrganizationCreateSerializer(serializers.ModelSerializer):
             slug = f"{slug}-{uuid.uuid4().hex[:6]}"
         
         validated_data['slug'] = slug
-        return super().create(validated_data)
+        organization = super().create(validated_data)
+        # Garantir que limites padrão do plano sejam aplicados
+        organization.set_plan_limits(organization.plan or 'free')
+        return organization
 
 
 class OrganizationUpdateSerializer(serializers.ModelSerializer):

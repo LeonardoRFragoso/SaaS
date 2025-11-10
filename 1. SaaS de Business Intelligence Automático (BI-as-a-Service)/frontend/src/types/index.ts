@@ -24,13 +24,14 @@ export interface Organization {
   website?: string;
   industry: string;
   company_size?: string;
-  plan: 'trial' | 'starter' | 'pro' | 'enterprise';
+  plan: 'free' | 'starter' | 'pro' | 'enterprise';
   trial_ends_at?: string;
   subscription_active: boolean;
   max_users: number;
   max_dashboards: number;
   max_datasources: number;
-  max_ai_queries: number;
+  max_data_rows: number;
+  max_ai_insights_per_month: number;
   user_count?: number;
   dashboard_count?: number;
   datasource_count?: number;

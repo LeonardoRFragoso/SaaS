@@ -1,0 +1,93 @@
+═══════════════════════════════════════════════════════════════════════════════
+              ESCOPO COMPLETO - GESTÃO DE DADOS + IA (DATA HUB)
+                    DataHub IA - O ChatGPT da Sua Empresa
+═══════════════════════════════════════════════════════════════════════════════
+
+📌 1. VISÃO GERAL
+
+Nome do Produto: DataHub IA
+Tagline: "Pergunte qualquer coisa sobre os dados da sua empresa"
+
+Proposta de Valor:
+Plataforma que centraliza dados de múltiplas planilhas e fontes, estrutura
+automaticamente em banco SQL e permite consultas em linguagem natural via IA.
+Funciona como um "ChatGPT privado" treinado nos dados da empresa.
+
+Diferencial Competitivo:
+• Chat IA que responde perguntas sobre seus dados
+• Centralização automática de dados dispersos
+• Estruturação inteligente (de planilhas para banco SQL)
+• Base para dashboards, relatórios e automações
+
+
+📊 2. FUNCIONALIDADES CORE
+
+✓ Centralização de Dados
+  - Google Drive, Dropbox, Excel, CSV
+  - Conexão com bancos de dados existentes
+  - APIs de terceiros (CRM, ERP)
+  - Atualização automática programada
+
+✓ Estruturação Inteligente
+  - IA detecta estrutura e relacionamentos
+  - Criação automática de schema SQL
+  - Limpeza e normalização de dados
+  - Detecção de duplicatas
+
+✓ Chat IA Conversacional
+  - Perguntas em português natural
+  - Exemplos: "Qual cliente mais comprou?", "Mostre vendas de outubro"
+  - Respostas com tabelas e gráficos
+  - Histórico de conversas
+
+✓ Exportação e Integração
+  - Exportar para Excel, CSV, JSON
+  - API REST para desenvolvedores
+  - Webhooks para automações
+  - Conexão com BI tools (Power BI, Tableau)
+
+PREMIUM: Modelos de IA customizados, data warehouse, ETL avançado, governança
+
+
+⚙️ 3. STACK TÉCNICA
+
+Backend: Python/FastAPI, PostgreSQL, Redis, Apache Airflow
+Frontend: React + TypeScript, TailwindCSS
+IA: OpenAI GPT-4 + LangChain (SQL generation), Embeddings (RAG)
+Infraestrutura: AWS/GCP, Docker, Kubernetes
+
+
+👥 4. PÚBLICO-ALVO
+
+Personas:
+1. Analista de Dados (centralizar dados para análises)
+2. Gestor de TI (criar data warehouse sem complexidade)
+3. Desenvolvedor (API de dados da empresa)
+4. Executivo (consultar dados sem depender de TI)
+
+Nichos: Empresas com dados dispersos, Startups, Consultorias, Agências
+
+
+💰 5. MONETIZAÇÃO
+
+STARTER: R$ 149/mês - 5GB dados, 100 consultas IA/mês, 2 fontes
+PRO: R$ 299/mês - 50GB, 500 consultas, fontes ilimitadas, API
+ENTERPRISE: R$ 599/mês - ilimitado, IA customizada, data warehouse, suporte dedicado
+
+Projeção 12 meses: 60 clientes, MRR R$ 20.000, ARR R$ 240.000
+
+
+📢 6. GO-TO-MARKET
+
+Canais: LinkedIn (analistas, gestores TI), Product Hunt, comunidades de dados
+Mensagem: "ChatGPT para os dados da sua empresa. Pergunte e receba respostas."
+Diferencial vs. Bancos de Dados: Interface conversacional, sem SQL, setup automático
+
+
+📊 7. MÉTRICAS
+
+CAC < R$ 400, Churn < 5%, NPS > 65, LTV > R$ 4.000
+
+═══════════════════════════════════════════════════════════════════════════════
+Última atualização: Novembro 2024 | Versão: 1.0
+═══════════════════════════════════════════════════════════════════════════════

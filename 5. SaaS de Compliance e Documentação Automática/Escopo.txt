@@ -1,0 +1,23 @@
+🧩 O que faz:
+
+Lê pastas do Google Drive.
+
+Gera relatórios de conformidade automática (multas, vencimentos, contratos).
+
+Notifica vencimentos via e-mail ou WhatsApp.
+
+💡 Exemplo:
+
+Uma transportadora conecta sua pasta de “multas” e “licenças”, e o sistema:
+
+Mostra quais licenças estão vencendo;
+
+Gera relatório semanal;
+
+Alerta gestores antes do vencimento.
+
+💰 Monetização:
+
+Plano mensal por empresa (R$ 79–199).
+
+Extras: histórico + relatórios automáticos + notificações customizadas.

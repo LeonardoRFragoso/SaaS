@@ -1,0 +1,29 @@
+🧩 O que faz:
+
+Lê planilhas de vendas, clientes ou logística.
+
+Detecta padrões e tendências automaticamente.
+
+Gera sugestões de ações (“Invista mais no cliente X”, “Reduza fretes em Y”).
+
+💡 Exemplo:
+
+Você conecta sua planilha de exportação/importação, e o sistema mostra:
+
+“Os embarques da OLAM cresceram 23% em volume, mas o faturamento caiu 7%. O frete médio subiu R$ 450/t.”
+
+⚙️ Funcionalidades extras:
+
+IA preditiva (forecast de vendas).
+
+Alertas automáticos via WhatsApp/Telegram.
+
+Comparativos mensais e gráficos inteligentes.
+
+💰 Monetização:
+
+Planos por volume de dados (até 10k linhas, 100k linhas, etc.).
+
+Assinatura + créditos de consulta de IA.
+
+Versão Enterprise com insights customizados.

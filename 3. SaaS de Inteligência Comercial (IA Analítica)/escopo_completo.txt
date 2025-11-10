@@ -1,0 +1,387 @@
+═══════════════════════════════════════════════════════════════════════════════
+              ESCOPO COMPLETO - INTELIGÊNCIA COMERCIAL (IA ANALÍTICA)
+                      SalesIQ - Inteligência de Vendas com IA
+═══════════════════════════════════════════════════════════════════════════════
+
+📌 1. VISÃO GERAL
+═══════════════════════════════════════════════════════════════════════════════
+
+Nome do Produto: SalesIQ
+Tagline: "IA que encontra oportunidades escondidas nos seus dados de vendas"
+
+Proposta de Valor:
+Plataforma de inteligência comercial que analisa automaticamente dados de vendas,
+clientes e logística para detectar padrões, prever tendências e recomendar ações
+estratégicas. Transforma dados brutos em decisões lucrativas.
+
+Diferencial Competitivo:
+• IA que detecta padrões invisíveis ao olho humano
+• Alertas proativos de oportunidades e riscos
+• Forecast de vendas com 85%+ de precisão
+• Recomendações de ações específicas e priorizadas
+• Foco em comércio exterior, distribuição e B2B
+
+
+📊 2. FUNCIONALIDADES DETALHADAS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CORE FEATURES (MVP - Versão 1.0)
+─────────────────────────────────────────────────────────────────────────────
+✓ Análise Automática de Dados
+  - Upload de planilhas (vendas, clientes, produtos)
+  - Detecção automática de padrões e anomalias
+  - Análise de sazonalidade
+  - Identificação de tendências (crescimento/queda)
+
+✓ Insights Inteligentes
+  - "Cliente X aumentou compras em 45% nos últimos 3 meses"
+  - "Produto Y está com queda de 20% - investigar"
+  - "Frete médio subiu R$ 450/t - renegociar contratos"
+  - Comparativos automáticos (mês vs mês, ano vs ano)
+
+✓ Recomendações de Ações
+  - Priorização de clientes (quem abordar primeiro)
+  - Produtos para empurrar ou descontinuar
+  - Oportunidades de cross-sell/up-sell
+  - Alertas de churn (clientes em risco)
+
+✓ Dashboards Inteligentes
+  - Visão 360º de clientes
+  - Análise de rentabilidade por produto/cliente/região
+  - Mapas de calor de performance
+  - Gráficos preditivos
+
+✓ Alertas Automáticos
+  - WhatsApp/Telegram quando detectar anomalia
+  - Email com resumo semanal de insights
+  - Notificações de oportunidades urgentes
+
+
+🔹 FEATURES PREMIUM (Planos Pro e Enterprise)
+─────────────────────────────────────────────────────────────────────────────
+✓ IA Preditiva Avançada
+  - Forecast de vendas (3, 6, 12 meses)
+  - Previsão de demanda por produto
+  - Análise de churn de clientes (probabilidade de perda)
+  - Simulação de cenários (what-if analysis)
+
+✓ Otimização Comercial
+  - Sugestão de precificação dinâmica
+  - Análise de elasticidade de preço
+  - Otimização de mix de produtos
+  - Recomendação de rotas/territórios
+
+✓ Integrações Avançadas
+  - CRMs (Pipedrive, HubSpot, Salesforce)
+  - ERPs (SAP, Totvs, Bling, Omie)
+  - Plataformas de E-commerce
+  - Sistemas de logística (TMS)
+
+✓ Análise Customizada
+  - Modelos de IA treinados nos dados da empresa
+  - KPIs personalizados
+  - Relatórios sob medida
+  - Consultoria de cientista de dados (mensal)
+
+
+🔹 ROADMAP FUTURO (Versão 2.0 - 6 meses)
+─────────────────────────────────────────────────────────────────────────────
+• App mobile com alertas em tempo real
+• Integração com marketplaces (Mercado Livre, Amazon)
+• IA conversacional ("Qual cliente devo visitar hoje?")
+• Análise de sentimento (redes sociais, reviews)
+• Benchmarking com concorrentes (dados públicos)
+• API para desenvolvedores
+
+
+⚙️ 3. ASPECTOS TÉCNICOS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 STACK TECNOLÓGICA
+─────────────────────────────────────────────────────────────────────────────
+Backend:
+• Python 3.11+ com FastAPI
+• PostgreSQL + TimescaleDB (séries temporais)
+• Redis (cache)
+• Apache Airflow (pipelines de dados)
+
+Frontend:
+• React 18 + TypeScript
+• TailwindCSS + shadcn/ui
+• Recharts + D3.js (visualizações)
+• React Query
+
+IA & Machine Learning:
+• Scikit-learn (modelos preditivos)
+• Prophet/ARIMA (forecasting)
+• XGBoost (classificação/regressão)
+• OpenAI GPT-4 (insights textuais)
+• Pandas + NumPy (processamento)
+
+Infraestrutura:
+• AWS (EC2, S3, RDS)
+• Docker + Kubernetes
+• GitHub Actions (CI/CD)
+• Datadog (monitoramento)
+
+
+🔹 INTEGRAÇÕES (APIs)
+─────────────────────────────────────────────────────────────────────────────
+Fontes de Dados:
+• Google Sheets API
+• Microsoft Excel Online
+• Salesforce API
+• Pipedrive API
+• SAP/ERP APIs
+
+Notificações:
+• WhatsApp Business API
+• Telegram Bot API
+• SendGrid (email)
+• Twilio (SMS)
+
+Pagamentos:
+• Stripe
+• Mercado Pago
+
+
+🔹 SEGURANÇA & COMPLIANCE
+─────────────────────────────────────────────────────────────────────────────
+• Criptografia AES-256
+• OAuth 2.0 + JWT
+• LGPD compliant
+• Dados sensíveis anonimizados
+• Backup diário automático
+• Logs de auditoria
+• Certificado SSL/TLS
+
+
+👥 4. PÚBLICO-ALVO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PERSONAS PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────────
+Persona 1: Gerente Comercial de Trading/Comex
+• Idade: 35-55 anos
+• Dor: Dados de embarques/clientes espalhados, difícil ver padrões
+• Objetivo: Identificar melhores clientes e produtos
+• Valor: Aumentar margem e volume de vendas
+
+Persona 2: Diretor de Vendas de Distribuidor/Atacado
+• Idade: 40-60 anos
+• Dor: Não sabe quais produtos empurrar ou descontinuar
+• Objetivo: Otimizar mix de produtos e precificação
+• Valor: Aumentar rentabilidade
+
+Persona 3: Representante Comercial/Agente
+• Idade: 30-50 anos
+• Dor: Perde tempo com clientes de baixo potencial
+• Objetivo: Focar nos clientes mais lucrativos
+• Valor: Aumentar comissões
+
+Persona 4: Dono de E-commerce/Varejo
+• Idade: 28-45 anos
+• Dor: Não entende por que alguns produtos vendem e outros não
+• Objetivo: Prever demanda e otimizar estoque
+• Valor: Reduzir ruptura e excesso de estoque
+
+
+🔹 NICHOS PRIORITÁRIOS (Ordem de Lançamento)
+─────────────────────────────────────────────────────────────────────────────
+1. Trading/Comércio Exterior (maior ticket)
+2. Distribuidores e Atacadistas
+3. Representantes Comerciais
+4. E-commerce médio porte
+5. Indústrias com força de vendas
+
+
+🔹 PAIN POINTS ESPECÍFICOS
+─────────────────────────────────────────────────────────────────────────────
+• "Não sei quais clientes estão comprando menos"
+• "Perco oportunidades por não ver padrões nos dados"
+• "Preciso prever vendas para planejar estoque"
+• "Não sei qual produto focar para maximizar lucro"
+• "Queria alertas automáticos de anomalias"
+
+
+💰 5. MONETIZAÇÃO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PLANOS E PREÇOS
+─────────────────────────────────────────────────────────────────────────────
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO STARTER - R$ 99/mês (anual) ou R$ 129/mês (mensal)               │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 1 usuário                                                             │
+│ • Até 10.000 linhas de dados                                           │
+│ • Análise automática de padrões                                        │
+│ • Insights semanais por email                                          │
+│ • Dashboards básicos                                                   │
+│ • 1 fonte de dados                                                     │
+│ • Suporte por email                                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO PRO - R$ 199/mês (anual) ou R$ 249/mês (mensal) ⭐ MAIS POPULAR  │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 5 usuários                                                            │
+│ • Até 100.000 linhas de dados                                          │
+│ • IA Preditiva (forecast de vendas)                                    │
+│ • Alertas automáticos (WhatsApp/Email)                                 │
+│ • Recomendações de ações priorizadas                                   │
+│ • Análise de churn de clientes                                         │
+│ • Dashboards avançados                                                 │
+│ • 3 fontes de dados                                                    │
+│ • Integrações com CRM/ERP (1 integração)                              │
+│ • Suporte prioritário (chat)                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO ENTERPRISE - R$ 399/mês (anual) ou R$ 499/mês (mensal)          │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • Usuários ilimitados                                                   │
+│ • Dados ilimitados                                                     │
+│ • IA customizada (treinada nos seus dados)                             │
+│ • Forecast avançado (12 meses)                                         │
+│ • Otimização de precificação                                           │
+│ • Simulação de cenários (what-if)                                      │
+│ • Alertas em tempo real                                                │
+│ • Fontes de dados ilimitadas                                          │
+│ • Integrações ilimitadas                                               │
+│ • Consultoria mensal com cientista de dados (2h)                      │
+│ • API de acesso                                                        │
+│ • Suporte dedicado (WhatsApp/Telefone)                                │
+│ • Onboarding personalizado                                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+
+🔹 ADD-ONS (Complementos Pagos)
+─────────────────────────────────────────────────────────────────────────
+• Pacote extra de dados (50k linhas): R$ 49/mês
+• Usuário adicional: R$ 39/mês
+• Integração adicional: R$ 69/mês
+• Consultoria com cientista de dados (1h): R$ 350
+• Modelo de IA customizado: R$ 1.500 (one-time)
+
+
+🔹 ESTRATÉGIA DE UPSELL
+─────────────────────────────────────────────────────────────────────────
+1. Trial gratuito de 14 dias (análise de amostra de dados)
+2. Demo com dados reais do cliente
+3. Relatório gratuito de oportunidades (lead magnet)
+4. Upgrade quando atingir limite de linhas
+5. Programa de indicação (1 mês grátis)
+
+
+🔹 PROJEÇÃO DE RECEITA (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 1-3:   8 clientes × R$ 99 = R$ 792/mês
+Mês 4-6:   25 clientes × R$ 180 (média) = R$ 4.500/mês
+Mês 7-9:   50 clientes × R$ 210 (média) = R$ 10.500/mês
+Mês 10-12: 80 clientes × R$ 230 (média) = R$ 18.400/mês
+
+MRR no 12º mês: ~R$ 18.400
+ARR no 12º mês: ~R$ 220.800
+
+
+📢 6. GO-TO-MARKET (ESTRATÉGIA DE LANÇAMENTO)
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CANAIS DE AQUISIÇÃO
+─────────────────────────────────────────────────────────────────────────
+Fase 1 (Mês 1-3): Validação
+• Outreach direto para tradings e distribuidores (LinkedIn)
+• Networking em eventos de comércio exterior
+• Parcerias com consultorias comerciais
+• Conteúdo: "Como prever vendas com IA"
+
+Fase 2 (Mês 4-6): Escala Inicial
+• Google Ads ("inteligência comercial", "forecast de vendas")
+• LinkedIn Ads (gerentes comerciais, diretores)
+• Webinars: "IA para aumentar vendas"
+• Cases de sucesso (vídeos)
+
+Fase 3 (Mês 7-12): Crescimento
+• SEO (ranquear para "análise preditiva de vendas")
+• Programa de parceiros (consultorias, agências)
+• Integrações com CRMs populares
+• Eventos presenciais (feiras de comércio)
+
+
+🔹 MENSAGENS DE MARKETING (Por Canal)
+─────────────────────────────────────────────────────────────────────────
+LinkedIn (B2B):
+"Gerentes Comerciais: descubra oportunidades escondidas nos seus dados.
+IA que prevê vendas e recomenda ações. Teste grátis por 14 dias."
+
+Google Ads:
+"Inteligência Comercial com IA | Forecast de Vendas | Teste Grátis"
+
+Email (Nurturing):
+Dia 1: "Análise grátis: encontramos 5 oportunidades nos seus dados"
+Dia 3: "Como [Cliente X] aumentou vendas em 34% com SalesIQ"
+Dia 7: "Veja o forecast de vendas do seu negócio"
+Dia 10: "Última chance: 20% OFF no primeiro trimestre"
+
+
+🔹 DIFERENCIAIS COMPETITIVOS
+─────────────────────────────────────────────────────────────────────────
+vs. Excel/Planilhas:
+✓ IA detecta padrões que humanos não veem
+✓ Forecast automático e preciso
+✓ Alertas proativos de oportunidades
+
+vs. Power BI/Tableau:
+✓ Foco em ações, não só visualização
+✓ IA preditiva inclusa
+✓ Mais barato e simples
+
+vs. Consultorias:
+✓ 20x mais barato (R$ 199 vs. R$ 4.000+/mês)
+✓ Insights em tempo real, não mensais
+✓ Escalável e automatizado
+
+
+📊 7. MÉTRICAS DE SUCESSO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 KPIs PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────
+Aquisição:
+• CAC: < R$ 400
+• Taxa de conversão trial → pago: > 20%
+• Tempo para primeiro insight: < 1 hora
+
+Retenção:
+• Churn mensal: < 4%
+• NPS: > 60
+• LTV: > R$ 3.000
+
+Engajamento:
+• Logins por semana: > 4
+• Insights visualizados/mês: > 30
+• Alertas configurados: > 2 por usuário
+
+Financeiro:
+• MRR: crescimento de 20%/mês
+• LTV/CAC ratio: > 5:1
+• Margem bruta: > 75%
+
+
+🔹 METAS DE CRESCIMENTO (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 3:  8 clientes pagantes
+Mês 6:  25 clientes pagantes
+Mês 9:  50 clientes pagantes
+Mês 12: 80 clientes pagantes
+
+MRR no 12º mês: R$ 18.400
+Churn médio: < 4%
+NPS: > 65
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              FIM DO ESCOPO
+═══════════════════════════════════════════════════════════════════════════════
+Última atualização: Novembro 2024
+Versão: 1.0

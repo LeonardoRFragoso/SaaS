@@ -1,0 +1,23 @@
+🧩 O que faz:
+
+Lê planilhas de fluxo de caixa e notas fiscais (upload ou integração).
+
+Classifica automaticamente as despesas/receitas com IA.
+
+Gera alertas de caixa, previsões e recomendações.
+
+💡 Exemplo:
+
+O app detecta que a empresa está com tendência de queda no caixa e sugere cortes de custo ou aumento de ticket médio.
+
+💰 Monetização:
+
+Assinatura (R$ 49–99/mês).
+
+Extras: módulo de DRE, relatórios automatizados, exportação para contabilidade.
+
+⚙️ Extras:
+
+Pode integrar com bancos via Open Banking.
+
+IA treinada no contexto da empresa (via embeddings).

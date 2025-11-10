@@ -1,0 +1,61 @@
+# Core Django
+Django>=5.0
+djangorestframework>=3.14
+django-cors-headers>=4.3
+Pillow>=10.0
+pandas>=2.1
+
+# Authentication & Security
+djangorestframework-simplejwt>=5.3
+PyJWT>=2.8
+
+# Database (opcional - para PostgreSQL)
+# psycopg2-binary>=2.9  # Descomente se usar PostgreSQL
+
+# Async Tasks (opcional - instalar quando necessário)
+# celery>=5.3
+# redis>=5.0
+# django-celery-beat>=2.5
+# django-celery-results>=2.5
+
+# Data Processing & Analytics (instalar quando necessário)
+# pandas>=2.1
+# numpy>=1.26
+# openpyxl>=3.1
+
+# AI & Machine Learning (instalar quando necessário)
+# openai>=1.0
+# langchain>=0.1
+
+# Google & Microsoft APIs (instalar quando necessário)
+# google-auth>=2.25
+# google-auth-oauthlib>=1.2
+# google-api-python-client>=2.111
+# msal>=1.26
+
+# Notifications (instalar quando necessário)
+# twilio>=8.11
+# sendgrid>=6.11
+
+# Payment (instalar quando necessário)
+# stripe>=7.9
+# mercadopago>=2.2
+
+# Charts & Visualization (instalar quando necessário)
+# plotly>=5.18
+# matplotlib>=3.8
+
+# Utils
+python-dateutil>=2.8
+pytz>=2023.3
+requests>=2.31
+
+# Development
+pytest>=7.4
+pytest-django>=4.7
+black>=23.12
+flake8>=7.0
+
+# Production
+gunicorn>=21.2
+whitenoise>=6.6

@@ -1,0 +1,396 @@
+═══════════════════════════════════════════════════════════════════════════════
+              ESCOPO COMPLETO - AUTOMAÇÃO DE RELATÓRIOS E INDICADORES
+                        ReportFlow - Relatórios Inteligentes
+═══════════════════════════════════════════════════════════════════════════════
+
+📌 1. VISÃO GERAL
+═══════════════════════════════════════════════════════════════════════════════
+
+Nome do Produto: ReportFlow
+Tagline: "Relatórios profissionais em segundos, não em horas"
+
+Proposta de Valor:
+Plataforma que automatiza a criação de relatórios executivos em PDF, PowerPoint
+e vídeo a partir de planilhas e dashboards. Elimina o trabalho manual de formatar
+relatórios, permitindo que gestores foquem em análise e decisão.
+
+Diferencial Competitivo:
+• Geração automática de relatórios em múltiplos formatos (PDF, PPT, vídeo)
+• Templates profissionais prontos para uso
+• IA que escreve análises e insights no relatório
+• White-label para agências e consultorias
+• Envio automático agendado por email/WhatsApp
+
+
+📊 2. FUNCIONALIDADES DETALHADAS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CORE FEATURES (MVP - Versão 1.0)
+─────────────────────────────────────────────────────────────────────────────
+✓ Importação de Dados
+  - Google Sheets, Excel Online, CSV
+  - Conexão com dashboards existentes
+  - Upload manual de arquivos
+  - Atualização automática programada
+
+✓ Geração Automática de Relatórios
+  - PDF profissional com gráficos e tabelas
+  - PowerPoint editável (slides prontos)
+  - Relatório em vídeo (narração automática com IA)
+  - Infográficos visuais
+
+✓ Templates Pré-Configurados
+  - Relatório de Vendas Mensal
+  - Relatório Financeiro (DRE, Fluxo de Caixa)
+  - Relatório de Marketing (Campanhas, ROI)
+  - Relatório de Performance (KPIs)
+  - Editor visual para customizar templates
+
+✓ IA para Análise Textual
+  - Geração automática de insights escritos
+  - Resumo executivo inteligente
+  - Comparativos automáticos (vs. mês anterior, meta)
+  - Sugestões de ações
+
+✓ Distribuição Automatizada
+  - Agendamento de envios (diário, semanal, mensal)
+  - Email com PDF anexado
+  - WhatsApp Business API
+  - Link compartilhável (visualização web)
+
+
+🔹 FEATURES PREMIUM (Planos Pro e Enterprise)
+─────────────────────────────────────────────────────────────────────────────
+✓ White Label Completo
+  - Logo e cores personalizadas
+  - Marca d'água customizada
+  - Domínio próprio (relatorios.suaempresa.com.br)
+  - Remoção total da marca ReportFlow
+
+✓ Relatórios Avançados
+  - Vídeos com narração em voz humana (IA)
+  - Dashboards interativos embarcados no PDF
+  - Relatórios multi-idioma (PT, EN, ES)
+  - Exportação para Word/Google Docs
+
+✓ Integrações Premium
+  - Power BI, Tableau, Looker (importar dashboards)
+  - CRMs (HubSpot, Salesforce, RD Station)
+  - Google Analytics, Meta Ads, Google Ads
+  - ERPs (Bling, Omie, SAP)
+
+✓ Colaboração em Equipe
+  - Comentários e anotações
+  - Aprovação de relatórios (workflow)
+  - Histórico de versões
+  - Biblioteca compartilhada de templates
+
+
+🔹 ROADMAP FUTURO (Versão 2.0 - 6 meses)
+─────────────────────────────────────────────────────────────────────────────
+• App mobile para visualizar relatórios
+• Geração de relatórios por comando de voz
+• Integração com Slack/Teams (envio automático)
+• Marketplace de templates (criados pela comunidade)
+• API pública para desenvolvedores
+• Relatórios em realidade aumentada (AR)
+
+
+⚙️ 3. ASPECTOS TÉCNICOS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 STACK TECNOLÓGICA
+─────────────────────────────────────────────────────────────────────────────
+Backend:
+• Python 3.11+ com FastAPI
+• PostgreSQL (metadados e usuários)
+• MongoDB (armazenamento de templates)
+• Redis (cache e filas de processamento)
+• Celery (geração assíncrona de relatórios)
+
+Frontend:
+• React 18 + TypeScript
+• TailwindCSS + shadcn/ui
+• React-PDF (preview de PDFs)
+• Fabric.js (editor de templates)
+
+Geração de Relatórios:
+• ReportLab (PDF)
+• python-pptx (PowerPoint)
+• Plotly + Matplotlib (gráficos)
+• FFmpeg + Remotion (vídeos)
+• ElevenLabs/Azure TTS (narração de voz)
+
+IA & Analytics:
+• OpenAI GPT-4 (análises textuais)
+• Pandas + NumPy (processamento)
+• LangChain (geração de insights)
+
+Infraestrutura:
+• AWS S3 (armazenamento de relatórios)
+• CloudFront (CDN para distribuição)
+• Docker + Kubernetes
+• GitHub Actions (CI/CD)
+
+
+🔹 INTEGRAÇÕES (APIs)
+─────────────────────────────────────────────────────────────────────────────
+Fontes de Dados:
+• Google Sheets API v4
+• Microsoft Graph API
+• Power BI REST API
+• Tableau API
+• Google Analytics API
+
+Distribuição:
+• WhatsApp Business API
+• SendGrid/AWS SES (email)
+• Slack API
+• Microsoft Teams Webhooks
+
+Pagamentos:
+• Stripe (internacional)
+• Mercado Pago (Brasil)
+
+
+🔹 SEGURANÇA & COMPLIANCE
+─────────────────────────────────────────────────────────────────────────────
+• Criptografia de dados em repouso e trânsito
+• OAuth 2.0 + JWT
+• LGPD compliant
+• Backup automático de relatórios (30 dias)
+• Controle de acesso por função (RBAC)
+• Logs de auditoria
+• SSL/TLS obrigatório
+
+
+👥 4. PÚBLICO-ALVO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PERSONAS PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────────
+Persona 1: Gerente de Vendas/Comercial
+• Idade: 30-50 anos
+• Dor: Gasta 4-6 horas/mês criando relatórios no PowerPoint
+• Objetivo: Automatizar reports para diretoria
+• Valor: Economizar tempo e focar em estratégia
+
+Persona 2: Analista de Marketing Digital
+• Idade: 25-40 anos
+• Dor: Clientes exigem relatórios mensais de campanhas
+• Objetivo: Entregar reports profissionais sem esforço manual
+• Valor: Atender mais clientes simultaneamente
+
+Persona 3: Dono de Agência (Marketing/Contabilidade)
+• Idade: 35-55 anos
+• Dor: Equipe perde tempo criando relatórios para clientes
+• Objetivo: Padronizar e automatizar entrega de relatórios
+• Valor: Aumentar produtividade e margem de lucro
+
+Persona 4: Controller/CFO de PME
+• Idade: 35-60 anos
+• Dor: Precisa apresentar resultados financeiros mensalmente
+• Objetivo: Gerar DRE e relatórios gerenciais automaticamente
+• Valor: Profissionalizar gestão financeira
+
+
+🔹 NICHOS PRIORITÁRIOS (Ordem de Lançamento)
+─────────────────────────────────────────────────────────────────────────────
+1. Agências de Marketing Digital (maior demanda)
+2. Consultorias Empresariais
+3. Escritórios Contábeis
+4. Empresas de E-commerce
+5. Departamentos Comerciais de PMEs
+
+
+🔹 PAIN POINTS ESPECÍFICOS
+─────────────────────────────────────────────────────────────────────────────
+• "Perco horas formatando relatórios no PowerPoint"
+• "Preciso entregar 10+ relatórios por mês para clientes"
+• "Meus relatórios ficam sempre iguais e sem insights"
+• "Não tenho designer para criar templates bonitos"
+• "Queria enviar relatórios automaticamente toda segunda-feira"
+
+
+💰 5. MONETIZAÇÃO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PLANOS E PREÇOS
+─────────────────────────────────────────────────────────────────────────────
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO STARTER - R$ 49/mês (anual) ou R$ 69/mês (mensal)                │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 1 usuário                                                             │
+│ • 10 relatórios/mês (PDF)                                              │
+│ • 5 templates básicos                                                  │
+│ • 2 fontes de dados                                                    │
+│ • Envio por email                                                      │
+│ • Marca ReportFlow nos relatórios                                      │
+│ • Suporte por email                                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO PRO - R$ 149/mês (anual) ou R$ 179/mês (mensal) ⭐ MAIS POPULAR  │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 5 usuários                                                            │
+│ • 50 relatórios/mês (PDF + PowerPoint)                                 │
+│ • Templates ilimitados + editor customizado                            │
+│ • Fontes de dados ilimitadas                                          │
+│ • IA para insights textuais                                            │
+│ • Envio por email + WhatsApp                                           │
+│ • Agendamento automático                                               │
+│ • Relatórios em vídeo (5/mês)                                          │
+│ • Suporte prioritário (chat)                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO ENTERPRISE - R$ 299/mês (anual) ou R$ 349/mês (mensal)          │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • Usuários ilimitados                                                   │
+│ • Relatórios ilimitados (todos os formatos)                            │
+│ • White Label completo (logo, cores, domínio)                          │
+│ • Templates customizados profissionalmente                             │
+│ • Integrações premium (Power BI, Tableau, CRMs)                        │
+│ • Relatórios em vídeo ilimitados                                       │
+│ • Narração em voz humana (IA)                                          │
+│ • Workflow de aprovação                                                │
+│ • API de acesso                                                        │
+│ • Suporte dedicado (WhatsApp/Telefone)                                │
+│ • Onboarding + treinamento da equipe                                   │
+└─────────────────────────────────────────────────────────────────────────┘
+
+
+🔹 ADD-ONS (Complementos Pagos)
+─────────────────────────────────────────────────────────────────────────
+• Pacote extra de relatórios (25): R$ 39/mês
+• Relatórios em vídeo extras (10): R$ 79/mês
+• Template customizado profissional: R$ 299 (one-time)
+• Integração adicional: R$ 49/mês
+• Consultoria de design de relatórios (2h): R$ 400
+
+
+🔹 ESTRATÉGIA DE UPSELL
+─────────────────────────────────────────────────────────────────────────
+1. Trial gratuito de 7 dias (3 relatórios grátis)
+2. Template showcase (galeria de exemplos)
+3. Notificação quando atingir 80% do limite de relatórios
+4. Oferta de upgrade com 1 mês grátis
+5. Programa de parceiros para agências (40% de comissão)
+
+
+🔹 PROJEÇÃO DE RECEITA (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 1-3:   15 clientes × R$ 49 = R$ 735/mês
+Mês 4-6:   40 clientes × R$ 110 (média) = R$ 4.400/mês
+Mês 7-9:   80 clientes × R$ 130 (média) = R$ 10.400/mês
+Mês 10-12: 150 clientes × R$ 140 (média) = R$ 21.000/mês
+
+MRR no 12º mês: ~R$ 21.000
+ARR no 12º mês: ~R$ 252.000
+
+
+📢 6. GO-TO-MARKET (ESTRATÉGIA DE LANÇAMENTO)
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CANAIS DE AQUISIÇÃO
+─────────────────────────────────────────────────────────────────────────
+Fase 1 (Mês 1-3): Validação
+• Outreach direto para agências de marketing (LinkedIn)
+• Grupos de Facebook de agências e freelancers
+• Parcerias com 5-10 agências (white-label)
+• Conteúdo: "Como criar relatórios profissionais em 5 minutos"
+
+Fase 2 (Mês 4-6): Escala Inicial
+• Google Ads ("automação de relatórios", "relatórios automáticos")
+• LinkedIn Ads (segmentação: gerentes, analistas)
+• YouTube (tutoriais de criação de relatórios)
+• Webinars: "Automatize seus relatórios de marketing"
+
+Fase 3 (Mês 7-12): Crescimento
+• SEO (ranquear para "gerador de relatórios automático")
+• Programa de afiliados (35% de comissão)
+• Marketplace (AppSumo - lifetime deal)
+• Integrações com plataformas (HubSpot, RD Station)
+
+
+🔹 MENSAGENS DE MARKETING (Por Canal)
+─────────────────────────────────────────────────────────────────────────
+LinkedIn (Agências):
+"Agências: entreguem relatórios profissionais aos clientes em segundos.
+White-label disponível. Teste grátis por 7 dias."
+
+Google Ads:
+"Relatórios Automáticos em PDF e PowerPoint | IA Inclusa | Teste Grátis"
+
+Instagram/Facebook:
+"Chega de perder horas no PowerPoint! Crie relatórios profissionais
+automaticamente. 7 dias grátis. [Link]"
+
+Email (Nurturing):
+Dia 1: "Bem-vindo! Crie seu primeiro relatório em 3 minutos"
+Dia 3: "Veja como [Agência X] economiza 20h/mês com ReportFlow"
+Dia 5: "Tutorial: Personalize seus templates"
+Dia 7: "Última chance: Ative seu plano com 20% OFF"
+
+
+🔹 DIFERENCIAIS COMPETITIVOS
+─────────────────────────────────────────────────────────────────────────
+vs. PowerPoint Manual:
+✓ 95% mais rápido (segundos vs. horas)
+✓ IA escreve análises automaticamente
+✓ Templates profissionais prontos
+
+vs. Google Data Studio:
+✓ Gera PDF/PowerPoint editável
+✓ Relatórios em vídeo
+✓ White-label para agências
+
+vs. Ferramentas de BI:
+✓ Foco em relatórios finais, não dashboards
+✓ Mais barato e simples
+✓ Ideal para apresentações executivas
+
+
+📊 7. MÉTRICAS DE SUCESSO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 KPIs PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────
+Aquisição:
+• CAC: < R$ 200
+• Taxa de conversão trial → pago: > 30%
+• Tempo para primeiro relatório: < 10 minutos
+
+Retenção:
+• Churn mensal: < 6%
+• NPS: > 55
+• LTV: > R$ 1.800
+
+Engajamento:
+• Relatórios gerados por usuário/mês: > 15
+• Templates customizados por usuário: > 2
+• Agendamentos ativos: > 60% dos usuários
+
+Financeiro:
+• MRR: crescimento de 25%/mês
+• LTV/CAC ratio: > 4:1
+• Margem bruta: > 75%
+
+
+🔹 METAS DE CRESCIMENTO (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 3:  15 clientes pagantes
+Mês 6:  40 clientes pagantes
+Mês 9:  80 clientes pagantes
+Mês 12: 150 clientes pagantes
+
+MRR no 12º mês: R$ 21.000
+Churn médio: < 6%
+NPS: > 60
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              FIM DO ESCOPO
+═══════════════════════════════════════════════════════════════════════════════
+Última atualização: Novembro 2024
+Versão: 1.0

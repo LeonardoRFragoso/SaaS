@@ -1,0 +1,409 @@
+═══════════════════════════════════════════════════════════════════════════════
+              ESCOPO COMPLETO - CONTROLE FINANCEIRO INTELIGENTE
+                    FinanceIQ - Gestão Financeira com IA
+═══════════════════════════════════════════════════════════════════════════════
+
+📌 1. VISÃO GERAL
+═══════════════════════════════════════════════════════════════════════════════
+
+Nome do Produto: FinanceIQ
+Tagline: "IA que prevê problemas de caixa antes de acontecerem"
+
+Proposta de Valor:
+Plataforma de gestão financeira inteligente que automatiza classificação de
+despesas/receitas, prevê fluxo de caixa, detecta anomalias e recomenda ações
+para melhorar a saúde financeira da empresa.
+
+Diferencial Competitivo:
+• IA que classifica transações automaticamente
+• Previsão de caixa com 90%+ de precisão
+• Alertas proativos de problemas financeiros
+• Integração com Open Banking (bancos brasileiros)
+• Recomendações personalizadas de corte de custos
+
+
+📊 2. FUNCIONALIDADES DETALHADAS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CORE FEATURES (MVP - Versão 1.0)
+─────────────────────────────────────────────────────────────────────────────
+✓ Importação Automática de Dados
+  - Upload de extratos bancários (OFX, CSV, PDF)
+  - Conexão com bancos via Open Banking
+  - Upload de notas fiscais (XML)
+  - Integração com planilhas (Google Sheets, Excel)
+
+✓ Classificação Inteligente
+  - IA categoriza despesas/receitas automaticamente
+  - Aprende com correções do usuário
+  - Detecção de duplicatas
+  - Identificação de despesas recorrentes
+
+✓ Fluxo de Caixa Inteligente
+  - Visão em tempo real do caixa
+  - Projeção de caixa (30, 60, 90 dias)
+  - Alertas de caixa baixo
+  - Comparativo realizado vs. previsto
+
+✓ Análise Financeira
+  - DRE automático (mensal/trimestral/anual)
+  - Análise de rentabilidade
+  - Indicadores financeiros (margem, liquidez, etc.)
+  - Gráficos de evolução
+
+✓ Alertas e Recomendações
+  - "Caixa ficará negativo em 15 dias - ações sugeridas"
+  - "Despesa X subiu 40% vs. mês anterior"
+  - "Oportunidade de renegociar fornecedor Y"
+  - Sugestões de corte de custos
+
+
+🔹 FEATURES PREMIUM (Planos Pro e Enterprise)
+─────────────────────────────────────────────────────────────────────────────
+✓ Open Banking Completo
+  - Conexão com múltiplos bancos simultaneamente
+  - Atualização automática de saldos
+  - Conciliação bancária automática
+  - Pagamentos via PIX integrado
+
+✓ IA Preditiva Avançada
+  - Forecast de receitas/despesas (12 meses)
+  - Simulação de cenários (what-if)
+  - Análise de sensibilidade
+  - Previsão de inadimplência
+
+✓ Gestão Avançada
+  - Controle de contas a pagar/receber
+  - Gestão de fornecedores
+  - Centro de custos
+  - Orçamento vs. realizado
+
+✓ Integrações Premium
+  - ERPs (Bling, Omie, Totvs, SAP)
+  - Sistemas contábeis
+  - Plataformas de pagamento (Stripe, Mercado Pago)
+  - E-commerce (Shopify, WooCommerce)
+
+✓ Relatórios Customizados
+  - Exportação para contador (formato padrão)
+  - Relatórios gerenciais personalizados
+  - Dashboard executivo
+  - API para desenvolvedores
+
+
+🔹 ROADMAP FUTURO (Versão 2.0 - 6 meses)
+─────────────────────────────────────────────────────────────────────────────
+• App mobile com alertas push
+• Assistente virtual de IA (chat financeiro)
+• Análise de crédito e score empresarial
+• Marketplace de crédito (conexão com bancos/fintechs)
+• Planejamento tributário com IA
+• Integração com contadores (workflow colaborativo)
+
+
+⚙️ 3. ASPECTOS TÉCNICOS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 STACK TECNOLÓGICA
+─────────────────────────────────────────────────────────────────────────────
+Backend:
+• Python 3.11+ com FastAPI
+• PostgreSQL (dados financeiros)
+• Redis (cache e sessões)
+• Celery (tarefas assíncronas)
+
+Frontend:
+• React 18 + TypeScript
+• TailwindCSS + shadcn/ui
+• Recharts (gráficos financeiros)
+• React Query
+
+IA & Machine Learning:
+• Scikit-learn (classificação de transações)
+• Prophet/ARIMA (forecast financeiro)
+• OpenAI GPT-4 (recomendações textuais)
+• Pandas + NumPy
+
+Integrações:
+• Pluggy/Belvo (Open Banking Brasil)
+• APIs de bancos (BB, Itaú, Nubank, etc.)
+• OCR para notas fiscais (Google Vision/Tesseract)
+
+Infraestrutura:
+• AWS (hospedagem no Brasil - LGPD)
+• Docker + Kubernetes
+• GitHub Actions (CI/CD)
+• Sentry (monitoramento de erros)
+
+
+🔹 INTEGRAÇÕES (APIs)
+─────────────────────────────────────────────────────────────────────────────
+Open Banking:
+• Pluggy API (agregador de bancos)
+• Belvo API (alternativa)
+• APIs diretas de bancos (BB, Itaú, etc.)
+
+ERPs e Contabilidade:
+• Bling API
+• Omie API
+• Conta Azul API
+• QuickBooks API
+
+Pagamentos:
+• Stripe
+• Mercado Pago
+• PagSeguro
+• PIX (Banco Central)
+
+Notificações:
+• WhatsApp Business API
+• SendGrid (email)
+• Twilio (SMS)
+
+
+🔹 SEGURANÇA & COMPLIANCE
+─────────────────────────────────────────────────────────────────────────────
+• Certificação PCI-DSS (dados de pagamento)
+• Criptografia AES-256 (dados em repouso)
+• TLS 1.3 (dados em trânsito)
+• OAuth 2.0 + JWT
+• LGPD compliant (dados no Brasil)
+• Conformidade com Open Banking Brasil
+• Backup automático criptografado
+• Logs de auditoria detalhados
+• 2FA obrigatório
+
+
+👥 4. PÚBLICO-ALVO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PERSONAS PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────────
+Persona 1: Dono de PME (sem controller)
+• Idade: 35-55 anos
+• Dor: Não sabe quanto tem de caixa real, toma decisões no escuro
+• Objetivo: Ter controle financeiro profissional
+• Valor: Evitar surpresas e tomar decisões baseadas em dados
+
+Persona 2: Controller/CFO de Empresa Média
+• Idade: 35-50 anos
+• Dor: Perde tempo classificando transações manualmente
+• Objetivo: Automatizar processos financeiros
+• Valor: Focar em análise estratégica, não operacional
+
+Persona 3: Contador/Escritório Contábil
+• Idade: 30-60 anos
+• Dor: Clientes pedem gestão financeira além da contabilidade
+• Objetivo: Oferecer serviço adicional de gestão financeira
+• Valor: Aumentar ticket médio e retenção de clientes
+
+Persona 4: Empreendedor/Startup
+• Idade: 25-40 anos
+• Dor: Ferramentas complexas demais ou caras
+• Objetivo: Controle financeiro simples e eficaz
+• Valor: Crescer de forma sustentável
+
+
+🔹 NICHOS PRIORITÁRIOS (Ordem de Lançamento)
+─────────────────────────────────────────────────────────────────────────────
+1. PMEs sem departamento financeiro (maior volume)
+2. Escritórios contábeis (white-label)
+3. Startups e empresas de tecnologia
+4. Comércio e varejo
+5. Prestadores de serviços
+
+
+🔹 PAIN POINTS ESPECÍFICOS
+─────────────────────────────────────────────────────────────────────────────
+• "Não sei se vou ter caixa para pagar a folha mês que vem"
+• "Perco horas classificando despesas no Excel"
+• "Meu contador só me dá números, não insights"
+• "Preciso de alertas antes de ficar sem caixa"
+• "Queria conectar direto com meu banco"
+
+
+💰 5. MONETIZAÇÃO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PLANOS E PREÇOS
+─────────────────────────────────────────────────────────────────────────────
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO STARTER - R$ 49/mês (anual) ou R$ 69/mês (mensal)                │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 1 usuário                                                             │
+│ • 1 conta bancária                                                     │
+│ • Classificação automática de transações                               │
+│ • Fluxo de caixa básico                                                │
+│ • DRE mensal                                                           │
+│ • Alertas por email                                                    │
+│ • Suporte por email                                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO PRO - R$ 99/mês (anual) ou R$ 129/mês (mensal) ⭐ MAIS POPULAR   │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 5 usuários                                                            │
+│ • 3 contas bancárias                                                   │
+│ • Open Banking (conexão automática)                                    │
+│ • Previsão de caixa (90 dias)                                          │
+│ • DRE + indicadores financeiros                                        │
+│ • Contas a pagar/receber                                               │
+│ • Alertas por WhatsApp + Email                                         │
+│ • Recomendações de IA                                                  │
+│ • Exportação para contador                                             │
+│ • Suporte prioritário (chat)                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO ENTERPRISE - R$ 199/mês (anual) ou R$ 249/mês (mensal)          │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • Usuários ilimitados                                                   │
+│ • Contas bancárias ilimitadas                                          │
+│ • Open Banking completo (todos os bancos)                              │
+│ • Forecast financeiro (12 meses)                                       │
+│ • Simulação de cenários                                                │
+│ • Centro de custos                                                     │
+│ • Orçamento vs. realizado                                              │
+│ • Integrações com ERP/Contabilidade                                    │
+│ • Conciliação bancária automática                                      │
+│ • Relatórios customizados                                              │
+│ • API de acesso                                                        │
+│ • Suporte dedicado (WhatsApp/Telefone)                                │
+│ • Onboarding personalizado                                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+
+🔹 ADD-ONS (Complementos Pagos)
+─────────────────────────────────────────────────────────────────────────
+• Conta bancária adicional: R$ 19/mês
+• Usuário adicional: R$ 19/mês
+• Integração com ERP: R$ 49/mês
+• Consultoria financeira (1h): R$ 300
+• Setup e migração de dados: R$ 499 (one-time)
+
+
+🔹 ESTRATÉGIA DE UPSELL
+─────────────────────────────────────────────────────────────────────────
+1. Trial gratuito de 14 dias (sem cartão)
+2. Onboarding com importação de dados históricos
+3. Relatório gratuito de saúde financeira
+4. Upgrade quando adicionar 2ª conta bancária
+5. Programa de indicação (1 mês grátis)
+
+
+🔹 PROJEÇÃO DE RECEITA (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 1-3:   20 clientes × R$ 49 = R$ 980/mês
+Mês 4-6:   60 clientes × R$ 85 (média) = R$ 5.100/mês
+Mês 7-9:   120 clientes × R$ 95 (média) = R$ 11.400/mês
+Mês 10-12: 200 clientes × R$ 105 (média) = R$ 21.000/mês
+
+MRR no 12º mês: ~R$ 21.000
+ARR no 12º mês: ~R$ 252.000
+
+
+📢 6. GO-TO-MARKET (ESTRATÉGIA DE LANÇAMENTO)
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CANAIS DE AQUISIÇÃO
+─────────────────────────────────────────────────────────────────────────
+Fase 1 (Mês 1-3): Validação
+• Outreach para PMEs no LinkedIn
+• Parcerias com 5-10 escritórios contábeis
+• Grupos de Facebook de empreendedores
+• Conteúdo: "Como prever problemas de caixa"
+
+Fase 2 (Mês 4-6): Escala Inicial
+• Google Ads ("controle financeiro empresarial")
+• Facebook/Instagram Ads (empreendedores)
+• Webinars: "Gestão financeira com IA"
+• Cases de sucesso
+
+Fase 3 (Mês 7-12): Crescimento
+• SEO (ranquear para "gestão financeira PME")
+• Programa de parceiros (contadores - 30% comissão)
+• Integrações com ERPs populares
+• Marketplace (AppSumo)
+
+
+🔹 MENSAGENS DE MARKETING (Por Canal)
+─────────────────────────────────────────────────────────────────────────
+LinkedIn (PMEs):
+"Donos de PME: saiba exatamente quanto terá de caixa nos próximos 90 dias.
+IA que prevê e alerta. Teste grátis por 14 dias."
+
+Google Ads:
+"Controle Financeiro com IA | Previsão de Caixa | Open Banking | Teste Grátis"
+
+Instagram/Facebook:
+"Chega de surpresas no caixa! IA que prevê problemas financeiros antes
+de acontecerem. 14 dias grátis. [Link]"
+
+Email (Nurturing):
+Dia 1: "Bem-vindo! Veja a saúde financeira da sua empresa"
+Dia 3: "Como [Empresa X] evitou crise de caixa com FinanceIQ"
+Dia 7: "Tutorial: Conecte seu banco em 2 minutos"
+Dia 10: "Última chance: 20% OFF no primeiro trimestre"
+
+
+🔹 DIFERENCIAIS COMPETITIVOS
+─────────────────────────────────────────────────────────────────────────
+vs. Excel/Planilhas:
+✓ Classificação automática (vs. manual)
+✓ Previsão de caixa com IA
+✓ Alertas proativos
+
+vs. Conta Azul/Bling:
+✓ IA preditiva inclusa
+✓ Foco em insights, não só registro
+✓ Mais simples e intuitivo
+
+vs. Sistemas Contábeis:
+✓ Gestão em tempo real (vs. mensal)
+✓ Recomendações acionáveis
+✓ Interface moderna e mobile
+
+
+📊 7. MÉTRICAS DE SUCESSO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 KPIs PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────
+Aquisição:
+• CAC: < R$ 250
+• Taxa de conversão trial → pago: > 25%
+• Tempo para primeira transação: < 30 minutos
+
+Retenção:
+• Churn mensal: < 5%
+• NPS: > 55
+• LTV: > R$ 1.500
+
+Engajamento:
+• Logins por semana: > 3
+• Transações classificadas/mês: > 50
+• Contas bancárias conectadas: > 1.5 por usuário
+
+Financeiro:
+• MRR: crescimento de 20%/mês
+• LTV/CAC ratio: > 4:1
+• Margem bruta: > 70%
+
+
+🔹 METAS DE CRESCIMENTO (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 3:  20 clientes pagantes
+Mês 6:  60 clientes pagantes
+Mês 9:  120 clientes pagantes
+Mês 12: 200 clientes pagantes
+
+MRR no 12º mês: R$ 21.000
+Churn médio: < 5%
+NPS: > 60
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              FIM DO ESCOPO
+═══════════════════════════════════════════════════════════════════════════════
+Última atualização: Novembro 2024
+Versão: 1.0

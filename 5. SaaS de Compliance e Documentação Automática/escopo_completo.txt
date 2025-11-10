@@ -1,0 +1,89 @@
+═══════════════════════════════════════════════════════════════════════════════
+           ESCOPO COMPLETO - COMPLIANCE E DOCUMENTAÇÃO AUTOMÁTICA
+                   ComplianceHub - Gestão Inteligente de Documentos
+═══════════════════════════════════════════════════════════════════════════════
+
+📌 1. VISÃO GERAL
+
+Nome do Produto: ComplianceHub
+Tagline: "Nunca mais perca um prazo ou vencimento importante"
+
+Proposta de Valor:
+Plataforma que monitora automaticamente documentos, licenças, multas e contratos
+armazenados no Google Drive/Dropbox, alertando vencimentos e gerando relatórios
+de conformidade. Elimina riscos de multas e problemas legais.
+
+Diferencial Competitivo:
+• Leitura automática de PDFs com OCR e IA
+• Alertas proativos de vencimentos (30, 15, 7 dias antes)
+• Dashboard de conformidade em tempo real
+• Ideal para transportadoras, despachantes e empresas reguladas
+
+
+📊 2. FUNCIONALIDADES CORE
+
+✓ Conexão com Armazenamento
+  - Google Drive, Dropbox, OneDrive
+  - Upload manual de documentos
+  - Organização automática por tipo
+
+✓ Leitura Inteligente de Documentos
+  - OCR para extrair datas e informações
+  - IA identifica tipo de documento (licença, multa, contrato)
+  - Extração automática de vencimentos
+
+✓ Alertas e Notificações
+  - WhatsApp, Email, SMS
+  - Alertas escalonados (30, 15, 7, 1 dia antes)
+  - Resumo semanal de pendências
+
+✓ Relatórios de Compliance
+  - Status de conformidade por categoria
+  - Histórico de vencimentos
+  - Exportação para auditorias
+
+PREMIUM: Workflow de renovação, integração com órgãos públicos, API
+
+
+⚙️ 3. STACK TÉCNICA
+
+Backend: Python/FastAPI, PostgreSQL, Redis
+Frontend: React + TypeScript, TailwindCSS
+IA: OpenAI GPT-4 (classificação), Tesseract/Google Vision (OCR)
+Integrações: Google Drive API, Dropbox API, WhatsApp Business API
+
+
+👥 4. PÚBLICO-ALVO
+
+Personas:
+1. Gestor de Transportadora (licenças de veículos, multas)
+2. Despachante Aduaneiro (documentos de importação/exportação)
+3. Gerente de Facilities (alvarás, licenças prediais)
+4. RH de PME (documentos trabalhistas, ASO, certificados)
+
+Nichos: Transportadoras, Despachantes, Construtoras, Indústrias, Clínicas
+
+
+💰 5. MONETIZAÇÃO
+
+STARTER: R$ 79/mês - 1 usuário, 100 documentos, alertas email
+PRO: R$ 149/mês - 5 usuários, 500 documentos, WhatsApp, relatórios
+ENTERPRISE: R$ 299/mês - ilimitado, API, integrações, white-label
+
+Projeção 12 meses: 100 clientes, MRR R$ 12.000, ARR R$ 144.000
+
+
+📢 6. GO-TO-MARKET
+
+Canais: LinkedIn (transportadoras), Google Ads, parcerias com despachantes
+Mensagem: "Evite multas e problemas legais. Alertas automáticos de vencimentos."
+Diferencial vs. Planilhas: Automático, proativo, sem erro humano
+
+
+📊 7. MÉTRICAS
+
+CAC < R$ 200, Churn < 4%, NPS > 60, LTV > R$ 2.000
+
+═══════════════════════════════════════════════════════════════════════════════
+Última atualização: Novembro 2024 | Versão: 1.0
+═══════════════════════════════════════════════════════════════════════════════

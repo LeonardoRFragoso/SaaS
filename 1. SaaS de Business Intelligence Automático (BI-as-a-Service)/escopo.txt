@@ -1,0 +1,386 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    ESCOPO COMPLETO - BI-AS-A-SERVICE
+                  Business Intelligence Automático para PMEs
+═══════════════════════════════════════════════════════════════════════════════
+
+📌 1. VISÃO GERAL
+═══════════════════════════════════════════════════════════════════════════════
+
+Nome do Produto: InsightFlow BI
+Tagline: "Transforme suas planilhas em decisões inteligentes"
+
+Proposta de Valor:
+Plataforma de Business Intelligence que conecta automaticamente às fontes de dados
+da empresa (Google Sheets, Excel, Drive) e gera dashboards interativos com insights
+de IA, eliminando a necessidade de analistas ou ferramentas complexas como Power BI.
+
+Diferencial Competitivo:
+• Setup em menos de 5 minutos (vs. semanas do Power BI)
+• IA que "conversa" com seus dados em português
+• Relatórios automáticos enviados por WhatsApp/Email
+• Preço acessível para PMEs (a partir de R$ 79/mês)
+
+
+📊 2. FUNCIONALIDADES DETALHADAS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CORE FEATURES (MVP - Versão 1.0)
+─────────────────────────────────────────────────────────────────────────────
+✓ Conexão Automática de Dados
+  - Google Sheets (via API oficial)
+  - Excel Online (Microsoft Graph API)
+  - Upload manual de arquivos (.xlsx, .csv)
+  - Atualização automática (a cada 1h, 6h, 24h ou manual)
+
+✓ Dashboards Pré-Configurados
+  - Dashboard de Vendas (faturamento, ticket médio, top clientes)
+  - Dashboard Financeiro (receitas, despesas, fluxo de caixa)
+  - Dashboard de Performance (KPIs customizáveis)
+  - Gráficos: linha, barra, pizza, funil, mapas de calor
+
+✓ Insights Automáticos com IA
+  - Análise textual dos dados (GPT-4)
+  - Detecção de anomalias ("Vendas caíram 15% vs. mês anterior")
+  - Sugestões de ações ("Cliente X está inativo há 45 dias")
+  - Resumo executivo semanal/mensal
+
+✓ Relatórios Automatizados
+  - Envio por email (PDF com gráficos)
+  - Envio por WhatsApp (via API oficial do WhatsApp Business)
+  - Agendamento flexível (diário, semanal, mensal)
+  - Templates personalizáveis
+
+✓ Chat IA Integrado
+  - Perguntas em linguagem natural
+  - Exemplos: "Qual foi o faturamento de outubro?", 
+             "Mostre os 5 clientes que mais compraram"
+  - Respostas com gráficos e tabelas
+
+
+🔹 FEATURES PREMIUM (Planos Pro e Enterprise)
+─────────────────────────────────────────────────────────────────────────────
+✓ Integrações Avançadas
+  - CRMs (RD Station, HubSpot, Pipedrive)
+  - ERPs (Bling, Omie, Tiny ERP)
+  - E-commerce (Shopify, WooCommerce, Mercado Livre)
+  - Bancos via Open Banking (Banco do Brasil, Itaú, Nubank)
+
+✓ IA Preditiva
+  - Forecast de vendas (próximos 3, 6, 12 meses)
+  - Análise de churn de clientes
+  - Recomendação de produtos/serviços
+  - Otimização de precificação
+
+✓ Consultoria Automatizada
+  - Relatório mensal com análise estratégica
+  - Plano de ação gerado pela IA
+  - Benchmarking com empresas similares (dados anonimizados)
+
+✓ White Label
+  - Personalização com logo e cores da empresa
+  - Domínio customizado (bi.suaempresa.com.br)
+  - Remoção de marca InsightFlow
+
+
+🔹 ROADMAP FUTURO (Versão 2.0 - 6 meses)
+─────────────────────────────────────────────────────────────────────────────
+• Aplicativo mobile (iOS/Android)
+• Alertas em tempo real via push notification
+• Integração com Slack/Teams
+• Dashboards colaborativos (comentários, anotações)
+• Exportação para Power BI/Tableau
+• API pública para desenvolvedores
+
+
+⚙️ 3. ASPECTOS TÉCNICOS
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 STACK TECNOLÓGICA
+─────────────────────────────────────────────────────────────────────────────
+Backend:
+• Python 3.11+ com FastAPI
+• PostgreSQL (dados estruturados)
+• Redis (cache e filas)
+• Celery (tarefas assíncronas)
+
+Frontend:
+• React 18 + TypeScript
+• TailwindCSS + shadcn/ui
+• Recharts/Chart.js (gráficos)
+• React Query (state management)
+
+IA & Analytics:
+• OpenAI GPT-4 (insights textuais)
+• Pandas + NumPy (processamento de dados)
+• Prophet/ARIMA (forecasting)
+• LangChain (chat IA)
+
+Infraestrutura:
+• AWS/Google Cloud (hospedagem)
+• Docker + Kubernetes (containers)
+• GitHub Actions (CI/CD)
+• Cloudflare (CDN e segurança)
+
+
+🔹 INTEGRAÇÕES (APIs)
+─────────────────────────────────────────────────────────────────────────────
+Fontes de Dados:
+• Google Sheets API v4
+• Microsoft Graph API (Excel Online)
+• Dropbox API
+• AWS S3 (arquivos grandes)
+
+Notificações:
+• WhatsApp Business API (oficial)
+• SendGrid/AWS SES (email)
+• Twilio (SMS - opcional)
+
+Pagamentos:
+• Stripe (cartão de crédito internacional)
+• Mercado Pago (PIX, boleto, cartão BR)
+
+
+🔹 SEGURANÇA & COMPLIANCE
+─────────────────────────────────────────────────────────────────────────────
+• Criptografia end-to-end (AES-256)
+• Autenticação OAuth 2.0 + JWT
+• LGPD compliant (dados armazenados no Brasil)
+• Backup automático diário
+• Logs de auditoria (quem acessou o quê)
+• Certificado SSL/TLS
+• 2FA (autenticação em dois fatores)
+
+
+👥 4. PÚBLICO-ALVO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PERSONAS PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────────
+Persona 1: Contador/Gestor de Escritório Contábil
+• Idade: 35-55 anos
+• Dor: Clientes pedem relatórios gerenciais, mas não tem tempo/ferramenta
+• Objetivo: Oferecer BI como serviço adicional aos clientes
+• Valor: Aumentar ticket médio e retenção de clientes
+
+Persona 2: Dono de Pequena Transportadora
+• Idade: 40-60 anos
+• Dor: Dados espalhados em várias planilhas, decisões "no feeling"
+• Objetivo: Entender rentabilidade por rota/cliente
+• Valor: Reduzir custos e aumentar margem
+
+Persona 3: Gerente de Agência de Marketing
+• Idade: 28-45 anos
+• Dor: Criar relatórios de campanha manualmente consome horas
+• Objetivo: Automatizar reports para clientes
+• Valor: Economizar tempo e impressionar clientes
+
+Persona 4: Representante Comercial/Distribuidor
+• Idade: 30-50 anos
+• Dor: Não sabe quais produtos/clientes são mais rentáveis
+• Objetivo: Focar esforços nos melhores clientes
+• Valor: Aumentar comissões
+
+
+🔹 NICHOS PRIORITÁRIOS (Ordem de Lançamento)
+─────────────────────────────────────────────────────────────────────────────
+1. Escritórios Contábeis (maior potencial de escala)
+2. Transportadoras e Despachantes
+3. Agências de Marketing Digital
+4. Distribuidores e Representantes Comerciais
+5. Pequeno Varejo (lojas, franquias)
+
+
+🔹 PAIN POINTS ESPECÍFICOS
+─────────────────────────────────────────────────────────────────────────────
+• "Power BI é muito caro e complicado"
+• "Não tenho analista de dados na equipe"
+• "Perco horas montando relatórios no Excel"
+• "Não sei interpretar os números"
+• "Preciso de insights, não só gráficos"
+
+
+💰 5. MONETIZAÇÃO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 PLANOS E PREÇOS
+─────────────────────────────────────────────────────────────────────────────
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO STARTER - R$ 79/mês (anual) ou R$ 99/mês (mensal)                │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 1 usuário                                                             │
+│ • 2 dashboards                                                          │
+│ • 3 fontes de dados (Google Sheets/Excel)                              │
+│ • Atualização a cada 6 horas                                           │
+│ • 50 perguntas IA/mês                                                  │
+│ • Relatórios por email (semanal)                                       │
+│ • Suporte por email                                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO PRO - R$ 149/mês (anual) ou R$ 179/mês (mensal) ⭐ MAIS POPULAR  │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • 5 usuários                                                            │
+│ • 10 dashboards                                                         │
+│ • Fontes ilimitadas                                                    │
+│ • Atualização em tempo real (1 hora)                                   │
+│ • 200 perguntas IA/mês                                                 │
+│ • Relatórios por email + WhatsApp (diário/semanal/mensal)             │
+│ • Insights automáticos com IA                                          │
+│ • Integrações com CRM/ERP (1 integração)                              │
+│ • Suporte prioritário (chat)                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PLANO ENTERPRISE - R$ 299/mês (anual) ou R$ 349/mês (mensal)          │
+├─────────────────────────────────────────────────────────────────────────┤
+│ • Usuários ilimitados                                                   │
+│ • Dashboards ilimitados                                                │
+│ • Fontes ilimitadas                                                    │
+│ • Atualização em tempo real (15 minutos)                              │
+│ • Perguntas IA ilimitadas                                              │
+│ • Relatórios personalizados                                            │
+│ • IA Preditiva (forecast, churn)                                       │
+│ • Consultoria Automatizada mensal                                      │
+│ • Integrações ilimitadas (CRM/ERP/E-commerce)                         │
+│ • White Label (logo, cores, domínio)                                   │
+│ • API de acesso                                                        │
+│ • Suporte dedicado (WhatsApp/Telefone)                                │
+│ • Onboarding personalizado                                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+
+🔹 ADD-ONS (Complementos Pagos)
+─────────────────────────────────────────────────────────────────────────
+• Usuário adicional: R$ 29/mês
+• Dashboard adicional: R$ 19/mês
+• Pacote extra de perguntas IA (100): R$ 39/mês
+• Integração adicional: R$ 49/mês
+• Relatório customizado: R$ 99 (one-time)
+• Consultoria humana (1h): R$ 250
+
+
+🔹 ESTRATÉGIA DE UPSELL
+─────────────────────────────────────────────────────────────────────────
+1. Trial gratuito de 14 dias (sem cartão de crédito)
+2. Onboarding guiado com dados de exemplo
+3. Notificações in-app quando atingir limites do plano
+4. Oferta de upgrade com desconto (20% off no primeiro mês)
+5. Programa de indicação (1 mês grátis para cada indicação)
+
+
+🔹 PROJEÇÃO DE RECEITA (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 1-3:   10 clientes × R$ 79 = R$ 790/mês
+Mês 4-6:   30 clientes × R$ 120 (média) = R$ 3.600/mês
+Mês 7-9:   60 clientes × R$ 135 (média) = R$ 8.100/mês
+Mês 10-12: 100 clientes × R$ 145 (média) = R$ 14.500/mês
+
+MRR no 12º mês: ~R$ 14.500
+ARR no 12º mês: ~R$ 174.000
+
+
+📢 6. GO-TO-MARKET (ESTRATÉGIA DE LANÇAMENTO)
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 CANAIS DE AQUISIÇÃO
+─────────────────────────────────────────────────────────────────────────
+Fase 1 (Mês 1-3): Validação
+• Outreach direto no LinkedIn (100 prospects/semana)
+• Grupos de Facebook/WhatsApp de contadores e empresários
+• Parcerias com 3-5 escritórios contábeis (comissão 20%)
+• Conteúdo orgânico (blog + YouTube)
+
+Fase 2 (Mês 4-6): Escala Inicial
+• Google Ads (palavras-chave: "BI para pequenas empresas")
+• Facebook/Instagram Ads (lookalike de clientes atuais)
+• Webinars gratuitos ("Como tomar decisões com dados")
+• Cases de sucesso (vídeos de clientes)
+
+Fase 3 (Mês 7-12): Crescimento
+• SEO (ranquear para "business intelligence PME")
+• Programa de afiliados (30% de comissão recorrente)
+• Marketplace (AppSumo, StackSocial)
+• Eventos presenciais (feiras de contabilidade/logística)
+
+
+🔹 MENSAGENS DE MARKETING (Por Canal)
+─────────────────────────────────────────────────────────────────────────
+LinkedIn (B2B):
+"Escritórios contábeis: ofereça BI aos seus clientes sem contratar analistas.
+Setup em 5 minutos, a partir de R$ 79/mês. [Demo gratuita]"
+
+Google Ads:
+"Business Intelligence Simples | Dashboards Automáticos em 5 min | Teste Grátis"
+
+Instagram/Facebook:
+"Cansado de tomar decisões no 'achismo'? Transforme suas planilhas em insights
+com IA. 14 dias grátis, sem cartão. [Link]"
+
+Email (Nurturing):
+Dia 1: "Bem-vindo! Veja como [Cliente X] aumentou vendas em 23% com dados"
+Dia 3: "Tutorial: Crie seu primeiro dashboard em 3 passos"
+Dia 7: "Caso de uso: Como transportadoras reduzem custos com BI"
+Dia 10: "Última chance: 20% OFF no seu primeiro mês"
+
+
+🔹 DIFERENCIAIS COMPETITIVOS (vs. Concorrentes)
+─────────────────────────────────────────────────────────────────────────
+vs. Power BI:
+✓ 10x mais barato (R$ 79 vs. R$ 800+)
+✓ Setup em minutos (vs. semanas)
+✓ Não precisa de treinamento técnico
+
+vs. Google Data Studio:
+✓ IA que gera insights automáticos
+✓ Relatórios por WhatsApp
+✓ Suporte em português
+
+vs. Tableau:
+✓ Preço acessível para PMEs
+✓ Interface em português
+✓ Foco em simplicidade
+
+
+📊 7. MÉTRICAS DE SUCESSO
+═══════════════════════════════════════════════════════════════════════════════
+
+🔹 KPIs PRINCIPAIS
+─────────────────────────────────────────────────────────────────────────
+Aquisição:
+• CAC (Custo de Aquisição por Cliente): < R$ 300
+• Taxa de conversão trial → pago: > 25%
+• Tempo médio para ativação: < 24h
+
+Retenção:
+• Churn mensal: < 5%
+• NPS (Net Promoter Score): > 50
+• Lifetime Value (LTV): > R$ 2.000
+
+Engajamento:
+• Dashboards criados por usuário: > 3
+• Perguntas IA por usuário/mês: > 20
+• Logins por semana: > 3
+
+Financeiro:
+• MRR (Monthly Recurring Revenue): crescimento de 20%/mês
+• LTV/CAC ratio: > 3:1
+• Margem bruta: > 70%
+
+
+🔹 METAS DE CRESCIMENTO (12 meses)
+─────────────────────────────────────────────────────────────────────────
+Mês 3:  10 clientes pagantes
+Mês 6:  30 clientes pagantes
+Mês 9:  60 clientes pagantes
+Mês 12: 100 clientes pagantes
+
+MRR no 12º mês: R$ 14.500
+Churn médio: < 5%
+NPS: > 60
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              FIM DO ESCOPO
+═══════════════════════════════════════════════════════════════════════════════
+Última atualização: Novembro 2024
+Versão: 1.0

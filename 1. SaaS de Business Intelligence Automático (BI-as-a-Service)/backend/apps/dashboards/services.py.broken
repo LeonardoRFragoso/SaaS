@@ -1,0 +1,666 @@
+import pandas as pd
+import numpy as np
+from django.utils import timezone
+from .models import Dashboard
+from apps.datasources.models import DataSource
+from .ai_processor import DataProcessor
+from apps.datasources.services import DataSourceService
+from .insights_generator import InsightsGenerator
+from .predictions import PredictionEngine
+from .alerts import AlertEngine
+
+
+class DashboardService:
+    """Serviço para processar dados de dashboards"""
+    
+    def _detect_column_types(self, df):
+        """
+        Detecta automaticamente os tipos de colunas no DataFrame.
+        Retorna um dicionário com as colunas categorizadas por tipo.
+        """
+        column_types = {
+            'numeric': [],      # Colunas numéricas (valores, preços, quantidades)
+            'date': [],         # Colunas de data/tempo
+            'categorical': [],  # Colunas de texto/categoria
+            'id': []           # Colunas que parecem IDs
+        }
+        
+        for col in df.columns:
+            # IMPORTANTE: Verificar numérico PRIMEIRO (pandas pode converter números para datetime)
+            if pd.api.types.is_numeric_dtype(df[col]):
+                # Verificar se parece um ID (sequencial ou único demais)
+                unique_ratio = df[col].nunique() / len(df)
+                if unique_ratio > 0.95 and df[col].dtype in ['int64', 'int32']:
+                    column_types['id'].append(col)
+                else:
+                    column_types['numeric'].append(col)
+                continue
+            
+            # Tentar converter para datetime (APENAS se não for numérico)
+            if pd.api.types.is_string_dtype(df[col]) or pd.api.types.is_object_dtype(df[col]):
+                try:
+                    # Tentar parse em uma amostra pequena
+                    sample = df[col].dropna().iloc[:min(5, len(df))]
+                    parsed = pd.to_datetime(sample, errors='raise')
+                    # Se conseguiu parsear, é data
+                    column_types['date'].append(col)
+                    continue
+                except:
+                    pass
+            
+            # É categórico (texto)
+            column_types['categorical'].append(col)
+        
+        return column_types
+    
+    def _detect_value_column(self, df, numeric_cols):
+        """
+        Detecta qual coluna numérica provavelmente representa valores/preços.
+        Prioriza colunas com valores decimais e maior variação.
+        """
+        if not numeric_cols:
+            return None
+        
+        best_col = None
+        best_score = -1
+        
+        for col in numeric_cols:
+            score = 0
+            
+            # Preferir colunas com valores decimais
+            if df[col].dtype == 'float64':
+                score += 3
+            
+            # Preferir colunas com boa variação (não são todas iguais)
+            if df[col].std() > 0:
+                score += 2
+            
+            # Preferir colunas com valores positivos
+            if (df[col] > 0).all():
+                score += 1
+            
+            if score > best_score:
+                best_score = score
+                best_col = col
+        
+        return best_col
+    
+    def _detect_quantity_column(self, df, numeric_cols, value_col):
+        """
+        Detecta qual coluna representa quantidades.
+        Geralmente são inteiros menores que valores.
+        """
+        if not numeric_cols:
+            return None
+        
+        candidates = [col for col in numeric_cols if col != value_col]
+        
+        for col in candidates:
+            # Preferir inteiros
+            if df[col].dtype in ['int64', 'int32'] and df[col].max() < 1000:
+                return col
+        
+        return None
+    
+    def process_dashboard_with_ai(self, dashboard):
+        """Processar dashboard com AI Processor"""
+        # Obter primeira fonte de dados
+        datasource = dashboard.datasources.first()
+        if not datasource:
+            return None
+        
+        # Obter dados da fonte
+        datasource_service = DataSourceService()
+        source_data = datasource_service.get_data(datasource)
+        
+        # Criar DataFrame
+        df = pd.DataFrame(source_data['rows'])
+        
+        # Usar AI Processor para detectar colunas
+        plan = dashboard.organization.plan
+        processor = DataProcessor(plan=plan)
+        
+        # Detectar mapeamento de colunas
+        column_mapping = processor.detect_column_mapping(df, dashboard.template)
+        
+        # Gerar insights
+        insights = processor.generate_insights(df, dashboard.template, column_mapping['mapping'])
+        
+        # Sugerir KPIs
+        kpi_suggestions = processor.suggest_kpis(df, dashboard.template, column_mapping['mapping'])
+        
+        # Salvar configuração no dashboard
+        dashboard.config = {
+            'column_mapping': column_mapping,
+            'insights': insights,
+            'kpis': kpi_suggestions,
+            'processed_at': timezone.now().isoformat(),
+        }
+        dashboard.save()
+        
+        return dashboard.config
+    
+    def get_dashboard_data(self, dashboard):
+        """Obter dados processados do dashboard"""
+        # Obter primeira fonte de dados
+        datasource = dashboard.datasources.first()
+        if not datasource:
+            return self._get_empty_data(dashboard.template)
+        
+        # Obter dados da fonte
+        datasource_service = DataSourceService()
+        source_data = datasource_service.get_data(datasource)
+        
+        # Criar DataFrame simples (DataSourceService retorna 'rows', não 'data')
+        df = pd.DataFrame(source_data['rows'])
+        
+        # Processar dados de forma simples
+        if dashboard.template == 'sales':
+            return self._process_sales_simple(df)
+        elif dashboard.template == 'financial':
+            return self._process_financial_simple(df)
+        else:
+            return self._get_empty_data(dashboard.template)
+    
+    def _generate_additional_charts(self, df, col_types):
+        """
+        Gera gráficos adicionais RICOS usando todas as colunas disponíveis.
+        """
+        additional = {}
+        
+        # 1. DISTRIBUIÇÃO REAL (Histogram) - Usando todas as vendas
+        if col_types.get('numeric'):
+            value_col = col_types['numeric'][0]
+            # Criar bins para distribuição
+            hist, bins = np.histogram(df[value_col].dropna(), bins=10)
+            distribution_data = [
+                {
+                    'range': f'R$ {int(bins[i])}-{int(bins[i+1])}',
+                    'count': int(hist[i]),
+                    'value': float((bins[i] + bins[i+1]) / 2)
+                }
+                for i in range(len(hist)) if hist[i] > 0
+            ]
+            additional['value_distribution'] = distribution_data
+        
+        # 2. ANÁLISE POR FORMA DE PAGAMENTO
+        payment_cols = [col for col in df.columns if any(word in col.lower() for word in ['pagamento', 'payment'])]
+        if payment_cols and col_types.get('numeric'):
+            payment_col = payment_cols[0]
+            value_col = col_types['numeric'][0]
+            payment_analysis = df.groupby(payment_col)[value_col].agg(['sum', 'count', 'mean']).reset_index()
+            additional['payment_analysis'] = [
+                {
+                    'method': str(row[payment_col]),
+                    'total': float(row['sum']),
+                    'count': int(row['count']),
+                    'avg_ticket': float(row['mean'])
+                }
+                for _, row in payment_analysis.iterrows()
+            ]
+        
+        # 3. ANÁLISE POR REGIÃO
+        region_cols = [col for col in df.columns if any(word in col.lower() for word in ['regiao', 'region', 'estado', 'state'])]
+        if region_cols and col_types.get('numeric'):
+            region_col = region_cols[0]
+            value_col = col_types['numeric'][0]
+            region_sales = df.groupby(region_col)[value_col].sum().reset_index()
+            additional['region_sales'] = [
+                {
+                    'region': str(row[region_col]),
+                    'sales': float(row[value_col])
+                }
+                for _, row in region_sales.iterrows()
+            ]
+        
+        # 4. ANÁLISE DE DESCONTOS
+        discount_cols = [col for col in df.columns if any(word in col.lower() for word in ['desconto', 'discount'])]
+        if discount_cols:
+            discount_col = discount_cols[0]
+            if pd.api.types.is_numeric_dtype(df[discount_col]):
+                avg_discount = df[discount_col].mean()
+                total_discount = df[discount_col].sum()
+                additional['discount_analysis'] = {
+                    'avg_discount': float(avg_discount),
+                    'total_discount': float(total_discount),
+                    'discount_rate': float(avg_discount)
+                }
+        
+        # 5. TENDÊNCIA SEMANAL REAL (agrupando por semana)
+        if col_types.get('date') and col_types.get('numeric'):
+            date_col = col_types['date'][0]
+            value_col = col_types['numeric'][0]
+            try:
+                df_copy = df.copy()
+                df_copy[date_col] = pd.to_datetime(df_copy[date_col], errors='coerce')
+                df_copy = df_copy.dropna(subset=[date_col])
+                df_copy = df_copy.sort_values(date_col)
+                
+                # Agrupar por semana
+                df_copy['week'] = df_copy[date_col].dt.isocalendar().week
+                df_copy['year'] = df_copy[date_col].dt.year
+                weekly_sales = df_copy.groupby(['year', 'week'])[value_col].sum().reset_index()
+                
+                additional['weekly_trend'] = [
+                    {
+                        'week': f"Sem {int(row['week'])}",
+                        'value': float(row[value_col])
+                    }
+                    for _, row in weekly_sales.iterrows()
+                ]
+            except:
+                pass
+        
+        return additional
+    
+    def _process_sales_simple(self, df):
+        """
+        Processar dados de vendas de forma DINÂMICA.
+        NÃO assume nomes de colunas específicos - detecta automaticamente!
+        """
+        try:
+            if df.empty:
+                return self._get_empty_data('sales')
+            
+            # DETECÇÃO AUTOMÁTICA DE COLUNAS
+            col_types = self._detect_column_types(df)
+            
+            # Detectar coluna de valor (preço, valor, etc)
+            value_col = self._detect_value_column(df, col_types['numeric'])
+            
+            if not value_col:
+                return self._get_empty_data('sales')
+            
+            # Detectar coluna de quantidade
+            qty_col = self._detect_quantity_column(df, col_types['numeric'], value_col)
+            
+            # Detectar coluna de data
+            date_col = col_types['date'][0] if col_types['date'] else None
+            
+            # Detectar coluna de produto/item 
+            # Estratégia: usar a primeira coluna categórica como produto,
+            # a menos que claramente seja outra coisa
+            product_col = None
+            
+            if col_types['categorical']:
+                # Tentar encontrar a melhor coluna baseado em heurística
+                for col in col_types['categorical']:
+                    col_lower = col.lower()
+                    # Preferir colunas que claramente são produtos
+                    if any(word in col_lower for word in ['produto', 'product', 'item', 'sku', 'servico', 'service']):
+                        product_col = col
+                        break
+                
+                # Se não encontrou por nome, usar a primeira categórica que não seja claramente cliente
+                if not product_col:
+                    for col in col_types['categorical']:
+                        col_lower = col.lower()
+                        # Evitar colunas que são claramente clientes
+                        if not any(word in col_lower for word in ['cliente', 'customer', 'comprador', 'buyer', 'nome']):
+                            product_col = col
+                            break
+            if date_col:
+                df_copy = df.copy()
+                df_copy[date_col] = pd.to_datetime(df_copy[date_col], errors='coerce')
+                df_copy = df_copy.dropna(subset=[date_col])
+                
+                if len(df_copy) > 0:
+                    df_copy['month'] = df_copy[date_col].dt.strftime('%b')
+                    sales_by_month = df_copy.groupby('month')[value_col].sum()
+                    
+                    # Ordenar por ordem cronológica
+                    month_order = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                    month_order_pt = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
+                                      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+                    
+                    # Detectar idioma do mês
+                    months_in_data = sales_by_month.index.tolist()
+                    use_pt = any(m in month_order_pt for m in months_in_data)
+                    order = month_order_pt if use_pt else month_order
+                    
+                    sales_evolution = [
+                    ]
+                    break
+            
+        # GERAR INSIGHTS AUTOMÁTICOS E ANÁLISES
+        insights_gen = InsightsGenerator()
+        kpis_dict = {
+            'total_revenue': total_revenue,
+            'total_customers': total_transactions,
+            'avg_ticket': avg_ticket,
+            'total_quantity': total_quantity,
+        }
+                    {
+                        'name': str(name),
+                        'sales': float(value),
+                        'growth': 0  # Requer dados históricos
+                    }
+                    for name, value in top_products.items()
+                ]
+            
+            # GRÁFICOS ADICIONAIS RICOS COM NOVAS ANÁLISES
+            additional_charts = self._generate_additional_charts(df, col_types)
+            
+            # GRÁFICO: Categorias (se houver outra coluna categórica)
+            # NÃO usar colunas que parecem ser clientes/pessoas
+            category_sales = []
+            category_cols = [
+                col for col in col_types['categorical'] 
+                if col != product_col 
+                and not any(word in col.lower() for word in ['cliente', 'customer', 'comprador', 'buyer', 'nome', 'name'])
+            ]
+            
+            if category_cols:
+                # Usar coluna com cardinalidade baixa (2-10 valores únicos)
+                for col in category_cols:
+                    unique_count = df[col].nunique()
+                    if 2 <= unique_count <= 10:
+                        cat_sales = df.groupby(col)[value_col].sum().nlargest(10)
+                        category_sales = [
+                            {'name': str(name), 'value': float(value)}
+                            for name, value in cat_sales.items()
+                        ]
+                        break
+            
+            # GERAR INSIGHTS AUTOMÁTICOS E ANÁLISES
+            insights_gen = InsightsGenerator()
+            kpis_dict = {
+                'total_revenue': total_revenue,
+                'total_customers': total_transactions,
+                'avg_ticket': avg_ticket,
+                'total_quantity': total_quantity,
+            }
+            
+            insights = insights_gen.generate_insights(df, col_types, kpis_dict)
+            problems = insights_gen.detect_data_problems(df, col_types)
+            suggestions = insights_gen.suggest_additional_charts(
+                df, 
+                col_types, 
+                ['sales_evolution', 'top_products', 'category_sales']
+            )
+            
+            # GERAR PREVISÕES
+            prediction_engine = PredictionEngine()
+            predictions = prediction_engine.generate_predictions(df, col_types, plan='free')
+            
+            # GERAR ALERTAS
+            alert_engine = AlertEngine()
+            alerts = alert_engine.generate_alerts(df, col_types, kpis_dict, plan='free')
+            
+            return {
+                'kpis': {
+                    'total_revenue': total_revenue,
+                    'total_customers': total_transactions,
+                    'avg_ticket': avg_ticket,
+                    'total_quantity': total_quantity,
+                    'growth_rate': 0,  # Requer comparação histórica
+                },
+                'charts': {
+                    'sales_evolution': sales_evolution,
+                    'top_products': top_products_data,
+                    'category_sales': category_sales,
+                    **additional_charts,  # ADICIONAR GRÁFICOS RICOS
+                },
+                'insights': insights,  # ✨ INSIGHTS AUTOMÁTICOS
+                'data_quality': problems,  # ⚠️ PROBLEMAS DETECTADOS
+                'chart_suggestions': suggestions,  # 📊 SUGESTÕES DE GRÁFICOS
+                'predictions': predictions,  # 🔮 PREVISÕES ML
+                'alerts': alerts,  # 🔔 ALERTAS INTELIGENTES
+                'metadata': {
+                    'detected_columns': {
+                        'value': value_col,
+                        'quantity': qty_col,
+                        'date': date_col,
+                        'product': product_col,
+                    }
+                }
+            }
+        except Exception as e:
+            import logging
+            import traceback
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error processing sales data: {str(e)}")
+            logger.error(traceback.format_exc())
+            return self._get_empty_data('sales')
+    
+    def _process_financial_simple(self, df):
+        """
+        Processar dados financeiros de forma DINÂMICA.
+        Detecta automaticamente receitas, despesas e categorias.
+        """
+        try:
+            if df.empty:
+                return self._get_empty_data('financial')
+            
+            # DETECÇÃO AUTOMÁTICA DE COLUNAS
+            col_types = self._detect_column_types(df)
+            
+            # Detectar coluna de valor
+            value_col = self._detect_value_column(df, col_types['numeric'])
+            
+            if not value_col:
+                return self._get_empty_data('financial')
+            
+            # Detectar coluna de data
+            date_col = col_types['date'][0] if col_types['date'] else None
+            
+            # Detectar coluna de tipo/categoria (receita/despesa)
+            type_col = None
+            for col in col_types['categorical']:
+                unique_vals = df[col].unique()
+                # Procurar por colunas que indicam tipo de transação
+                if len(unique_vals) <= 5:  # Poucos valores únicos
+                    type_col = col
+                    break
+            
+            # Tentar separar receitas e despesas
+            total_revenue = 0
+            total_expenses = 0
+            
+            if type_col:
+                # Tentar identificar o que é receita vs despesa
+                for val in df[type_col].unique():
+                    val_lower = str(val).lower()
+                    group_sum = df[df[type_col] == val][value_col].sum()
+                    
+                    # Palavras que indicam receita
+                    if any(word in val_lower for word in ['receita', 'revenue', 'entrada', 'income', 'credit']):
+                        total_revenue += group_sum
+                    # Palavras que indicam despesa
+                    elif any(word in val_lower for word in ['despesa', 'expense', 'saida', 'cost', 'debit']):
+                        total_expenses += group_sum
+                    else:
+                        # Se não conseguir identificar, assumir baseado no sinal
+                        if group_sum >= 0:
+                            total_revenue += abs(group_sum)
+                        else:
+                            total_expenses += abs(group_sum)
+            else:
+                # Se não há coluna de tipo, usar valores positivos como receita e negativos como despesa
+                total_revenue = df[df[value_col] > 0][value_col].sum()
+                total_expenses = abs(df[df[value_col] < 0][value_col].sum())
+            
+            net_profit = total_revenue - total_expenses
+            profit_margin = (net_profit / total_revenue * 100) if total_revenue > 0 else 0
+            
+            # GRÁFICO: Evolução por mês
+            revenue_by_month = {}
+            expenses_by_month = {}
+            
+            if date_col:
+                df_copy = df.copy()
+                df_copy[date_col] = pd.to_datetime(df_copy[date_col], errors='coerce')
+                df_copy = df_copy.dropna(subset=[date_col])
+                
+                if len(df_copy) > 0:
+                    df_copy['month'] = df_copy[date_col].dt.strftime('%b')
+                    
+                    if type_col:
+                        # Separar por tipo
+                        for val in df_copy[type_col].unique():
+                            val_lower = str(val).lower()
+                            month_data = df_copy[df_copy[type_col] == val].groupby('month')[value_col].sum().to_dict()
+                            
+                            if any(word in val_lower for word in ['receita', 'revenue', 'entrada', 'income']):
+                                revenue_by_month.update(month_data)
+                            elif any(word in val_lower for word in ['despesa', 'expense', 'saida', 'cost']):
+                                expenses_by_month.update(month_data)
+                    else:
+                        # Usar sinal do valor
+                        revenue_by_month = df_copy[df_copy[value_col] > 0].groupby('month')[value_col].sum().to_dict()
+                        expenses_by_month = df_copy[df_copy[value_col] < 0].groupby('month')[value_col].apply(lambda x: abs(x).sum()).to_dict()
+            
+            return {
+                'kpis': {
+                    'total_revenue': float(total_revenue),
+                    'total_expenses': float(total_expenses),
+                    'net_profit': float(net_profit),
+                    'profit_margin': float(profit_margin),
+                },
+                'charts': {
+                    'revenue_by_month': revenue_by_month,
+                    'expenses_by_month': expenses_by_month,
+                },
+                'metadata': {
+                    'detected_columns': {
+                        'value': value_col,
+                        'date': date_col,
+                        'type': type_col,
+                    }
+                }
+            }
+        except Exception as e:
+            import logging
+            import traceback
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error processing financial data: {str(e)}")
+            logger.error(traceback.format_exc())
+            return self._get_empty_data('financial')
+    
+    def _process_sales_template(self, source_data, column_mapping=None):
+        """Processar dados para template de vendas"""
+        df = pd.DataFrame(source_data['rows'])
+        
+        # Usar mapeamento de colunas detectado
+        mapping = column_mapping.get('mapping', {}) if column_mapping else {}
+        
+        # Calcular KPIs usando colunas mapeadas
+        revenue_col = mapping.get('revenue', 'valor')
+        customer_col = mapping.get('customer', 'cliente')
+        
+        total_revenue = df[revenue_col].sum() if revenue_col in df.columns else 0
+        total_customers = df[customer_col].nunique() if customer_col in df.columns else len(df)
+        avg_ticket = total_revenue / total_customers if total_customers > 0 else 0
+        
+        # Evolução de vendas por mês
+        date_col = mapping.get('date', 'data')
+        product_col = mapping.get('product', 'produto')
+        quantity_col = mapping.get('quantity', 'quantidade')
+        
+        if date_col in df.columns:
+            df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
+            df['mes'] = df[date_col].dt.to_period('M').astype(str)
+            sales_evolution = df.groupby('mes')[revenue_col].sum().to_dict() if revenue_col in df.columns else {}
+        else:
+            sales_evolution = {}
+        
+        # Top produtos
+        if product_col in df.columns and revenue_col in df.columns:
+            top_products = df.groupby(product_col)[revenue_col].sum().nlargest(5).to_dict()
+        else:
+            top_products = {}
+        
+        # Quantidade total vendida
+        total_quantity = df[quantity_col].sum() if quantity_col in df.columns else len(df)
+        
+        return {
+            'kpis': {
+                'total_revenue': float(total_revenue),
+                'total_customers': int(total_customers),
+                'avg_ticket': float(avg_ticket),
+                'total_quantity': int(total_quantity),
+            },
+            'charts': {
+                'sales_evolution': sales_evolution,
+                'top_products': top_products,
+            }
+        }
+    
+    def _process_financial_template(self, source_data, column_mapping=None):
+        """Processar dados para template financeiro"""
+        df = pd.DataFrame(source_data['rows'])
+        
+        # Usar mapeamento de colunas detectado
+        mapping = column_mapping.get('mapping', {}) if column_mapping else {}
+        
+        # Calcular KPIs usando colunas mapeadas
+        revenue_col = mapping.get('revenue', 'receita')
+        expense_col = mapping.get('expense', 'despesa')
+        
+        total_revenue = df[revenue_col].sum() if revenue_col in df.columns else 0
+        total_expenses = df[expense_col].sum() if expense_col in df.columns else 0
+        net_profit = total_revenue - total_expenses
+        
+        # Receitas vs Despesas por mês
+        if 'data' in df.columns:
+            df['data'] = pd.to_datetime(df['data'])
+            df['mes'] = df['data'].dt.to_period('M').astype(str)
+            
+            revenue_by_month = df[df['tipo'] == 'receita'].groupby('mes')['valor'].sum().to_dict()
+            expenses_by_month = df[df['tipo'] == 'despesa'].groupby('mes')['valor'].sum().to_dict()
+        else:
+            revenue_by_month = {}
+            expenses_by_month = {}
+        
+        return {
+            'kpis': {
+                'total_revenue': float(total_revenue),
+                'total_expenses': float(total_expenses),
+                'net_profit': float(net_profit),
+                'profit_margin': float((net_profit / total_revenue * 100) if total_revenue > 0 else 0),
+            },
+            'charts': {
+                'revenue_by_month': revenue_by_month,
+                'expenses_by_month': expenses_by_month,
+            }
+        }
+    
+    def _get_empty_data(self, template):
+        """Retornar dados vazios para template"""
+        if template == 'sales':
+            return {
+                'kpis': {
+                    'total_revenue': 0,
+                    'total_customers': 0,
+                    'avg_ticket': 0,
+                    'growth_rate': 0,
+                },
+                'charts': {
+                    'sales_evolution': {},
+                    'category_sales': {},
+                    'top_products': {},
+                }
+            }
+        elif template == 'financial':
+            return {
+                'kpis': {
+                    'total_revenue': 0,
+                    'total_expenses': 0,
+                    'net_profit': 0,
+                    'profit_margin': 0,
+                },
+                'charts': {
+                    'revenue_by_month': {},
+                    'expenses_by_month': {},
+                }
+            }
+        else:
+            return {'kpis': {}, 'charts': {}}
+    
+    def change_template(self, dashboard, new_template):
+        """Trocar template do dashboard"""
+        dashboard.template = new_template
+        dashboard.config = {}  # Resetar configurações
+        dashboard.save()
+        return dashboard

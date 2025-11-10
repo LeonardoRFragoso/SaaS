@@ -1,0 +1,19 @@
+🧩 O que faz:
+
+Centraliza dados de várias planilhas (Drive, Dropbox, Excel).
+
+Estrutura automaticamente os dados em banco SQL.
+
+IA responde perguntas sobre o banco (“Qual cliente mais comprou este trimestre?”).
+
+⚙️ Diferencial:
+
+Funciona como um “ChatGPT da sua empresa”.
+
+Pode ser usado como base para relatórios, bots ou dashboards.
+
+💰 Monetização:
+
+Plano por GB de dados + usuários.
+
+Extras: chat IA privado + relatórios em PDF.

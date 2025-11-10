@@ -1,0 +1,13 @@
+data,receita,despesa,categoria,descricao
+2024-01-01,0.0,3500.0,Salários,Pagamento de salários - Janeiro
+2024-01-05,15000.0,0.0,Vendas,Vendas do produto A
+2024-01-08,0.0,850.0,Marketing,Anúncios Google Ads
+2024-01-10,8500.0,0.0,Vendas,Vendas do produto B
+2024-01-12,0.0,1200.0,Infraestrutura,Aluguel do escritório
+2024-01-15,0.0,450.0,Utilities,Conta de luz e internet
+2024-01-18,12000.0,0.0,Vendas,Vendas do produto C
+2024-01-20,0.0,2100.0,Fornecedores,Compra de matéria-prima
+2024-01-22,0.0,680.0,Marketing,Campanha redes sociais
+2024-01-25,18500.0,0.0,Vendas,Vendas do produto A
+2024-01-28,0.0,950.0,Operacional,Material de escritório
+2024-01-30,0.0,1500.0,Impostos,Pagamento de impostos

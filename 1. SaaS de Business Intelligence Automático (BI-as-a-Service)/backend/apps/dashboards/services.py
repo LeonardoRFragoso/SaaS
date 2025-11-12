@@ -516,3 +516,21 @@ class DashboardService:
             }
         
         return {'kpis': {}, 'charts': {}}
+
+    def change_template(self, dashboard, new_template, reset_config=True):
+        """
+        Trocar o template do dashboard garantindo validação e limpeza de configuração.
+        """
+        valid_templates = {choice for choice, _ in Dashboard.TEMPLATE_CHOICES}
+        if new_template not in valid_templates:
+            raise ValueError('Template inválido informado.')
+
+        if dashboard.template == new_template and not reset_config:
+            return dashboard
+
+        dashboard.template = new_template
+        if reset_config:
+            dashboard.config = {}
+
+        dashboard.save(update_fields=['template', 'config', 'updated_at'])
+        return dashboard

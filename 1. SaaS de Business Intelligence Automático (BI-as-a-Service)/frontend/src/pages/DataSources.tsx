@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Database, FileSpreadsheet, Upload, Link as LinkIcon, Lock, CheckCircle, XCircle, RefreshCw, Trash2, BarChart3, Table } from 'lucide-react'
 import UpgradeModal from '../components/UpgradeModal'
-import { dataSourceService, type DataSource } from '../services/dataSourceService'
+import { dataSourceService, type DataSource, type DataSourceData } from '../services/dataSourceService'
+import { organizationService } from '../services/organizationService'
+import type { Organization } from '../types'
 
 const sourceTypes = [
   {
@@ -16,10 +18,10 @@ const sourceTypes = [
   {
     id: 'excel_online',
     name: 'Excel Online',
-    description: 'Conecte planilhas do Microsoft 365',
+    description: 'Em breve: conexão com planilhas do Microsoft 365',
     icon: FileSpreadsheet,
     color: 'blue',
-    available: true,
+    available: false,
   },
   {
     id: 'csv_upload',
@@ -54,12 +56,17 @@ export default function DataSources() {
   const [selectedSource, setSelectedSource] = useState('')
   const [dataSources, setDataSources] = useState<DataSource[]>([])
   const [loading, setLoading] = useState(true)
+  const [organization, setOrganization] = useState<Organization | null>(null)
+  const [showPreviewModal, setShowPreviewModal] = useState(false)
+  const [previewSource, setPreviewSource] = useState<DataSource | null>(null)
+  const [previewData, setPreviewData] = useState<DataSourceData | null>(null)
+  const [previewLoading, setPreviewLoading] = useState(false)
+  const [previewError, setPreviewError] = useState('')
   
-  // Mock - será substituído por dados reais do usuário
-  const currentPlan = 'free'
-  const dataSourceLimit = 1
+  const currentPlan = organization?.plan ?? 'free'
+  const dataSourceLimit = organization?.max_datasources ?? 1
   const dataSourcesCount = dataSources.length
-  const maxRows = 5000
+  const maxRows = organization?.max_data_rows ?? 5000
 
   // Carregar fontes de dados
   useEffect(() => {
@@ -70,11 +77,20 @@ export default function DataSources() {
   const loadDataSources = async () => {
     try {
       setLoading(true)
-      const data = await dataSourceService.list()
-      console.log('Fontes de dados carregadas:', data)
-      
-      // O backend retorna um objeto paginado: { count, next, previous, results }
-      setDataSources(data.results)
+      const [sourcesResponse, organizationResponse] = await Promise.allSettled([
+        dataSourceService.list(),
+        organizationService.getMyOrganization(),
+      ])
+
+      if (sourcesResponse.status === 'fulfilled') {
+        setDataSources(sourcesResponse.value.results)
+      } else {
+        setDataSources([])
+      }
+
+      if (organizationResponse.status === 'fulfilled') {
+        setOrganization(organizationResponse.value)
+      }
     } catch (error) {
       console.error('Erro ao carregar fontes:', error)
       setDataSources([]) // Em caso de erro, definir como array vazio
@@ -113,6 +129,34 @@ export default function DataSources() {
     setShowConnectModal(true)
   }
 
+  const handlePreviewData = async (source: DataSource) => {
+    setPreviewSource(source)
+    setPreviewData(null)
+    setPreviewError('')
+    setShowPreviewModal(true)
+    setPreviewLoading(true)
+
+    try {
+      const data = await dataSourceService.getData(source.id)
+      setPreviewData(data)
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.error ??
+        err?.response?.data?.detail ??
+        'Não foi possível carregar os dados desta fonte agora.'
+      setPreviewError(message)
+    } finally {
+      setPreviewLoading(false)
+    }
+  }
+
+  const closePreviewModal = () => {
+    setShowPreviewModal(false)
+    setPreviewSource(null)
+    setPreviewData(null)
+    setPreviewError('')
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
@@ -146,7 +190,7 @@ export default function DataSources() {
                 Limite de fontes de dados atingido
               </p>
               <p className="text-sm text-yellow-800 dark:text-yellow-300 mb-3">
-                Você atingiu o limite de {dataSourceLimit} fonte de dados no plano Free.
+                Você atingiu o limite de {dataSourceLimit} fonte{dataSourceLimit > 1 ? 's' : ''} de dados no plano {currentPlan.toUpperCase()}.
                 Faça upgrade para conectar mais fontes.
               </p>
               <Link
@@ -190,7 +234,7 @@ export default function DataSources() {
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{source.description}</p>
                 {!source.available && (
                   <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-semibold">
-                    Plano Pro
+                    {source.id === 'excel_online' ? 'Em breve' : 'Plano Pro'}
                   </span>
                 )}
               </button>
@@ -282,11 +326,11 @@ export default function DataSources() {
                     <span>Criar Dashboard com esta Fonte</span>
                   </button>
                   <button
-                    onClick={() => window.open(`/datasources/${source.id}/data`, '_blank')}
+                    onClick={() => handlePreviewData(source)}
                     className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white rounded-lg font-semibold transition-colors"
                   >
                     <Table className="h-5 w-5" />
-                    <span>Ver e Editar Dados</span>
+                    <span>Visualizar Dados</span>
                   </button>
                 </div>
               </div>
@@ -295,10 +339,22 @@ export default function DataSources() {
         )}
       </div>
 
+      {/* Preview Modal */}
+      {showPreviewModal && previewSource && (
+        <DataPreviewModal
+          source={previewSource}
+          data={previewData}
+          loading={previewLoading}
+          error={previewError}
+          onClose={closePreviewModal}
+        />
+      )}
+
       {/* Connect Modal */}
       {showConnectModal && (
         <ConnectModal
           sourceType={selectedSource}
+          maxRows={maxRows}
           onClose={() => setShowConnectModal(false)}
           onSuccess={loadDataSources}
         />
@@ -317,8 +373,14 @@ export default function DataSources() {
 }
 
 // Modal de Conexão
-function ConnectModal({ sourceType, onClose, onSuccess }: { 
+function ConnectModal({
+  sourceType,
+  maxRows,
+  onClose,
+  onSuccess,
+}: {
   sourceType: string
+  maxRows: number
   onClose: () => void
   onSuccess: () => void
 }) {
@@ -344,8 +406,6 @@ function ConnectModal({ sourceType, onClose, onSuccess }: {
       if (sourceType === 'csv_upload' && formData.file) {
         response = await dataSourceService.uploadCSV(formData.name, formData.file)
       } else if (sourceType === 'google_sheets' && formData.url) {
-        response = await dataSourceService.connectGoogleSheets(formData.name, formData.url)
-      } else if (sourceType === 'excel_online' && formData.url) {
         response = await dataSourceService.connectGoogleSheets(formData.name, formData.url)
       }
 
@@ -378,7 +438,7 @@ function ConnectModal({ sourceType, onClose, onSuccess }: {
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full p-8">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          Conectar {sourceType === 'google_sheets' ? 'Google Sheets' : sourceType === 'excel_online' ? 'Excel Online' : 'CSV'}
+          Conectar {sourceType === 'google_sheets' ? 'Google Sheets' : 'CSV'}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -409,7 +469,7 @@ function ConnectModal({ sourceType, onClose, onSuccess }: {
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                  Máximo 5.000 linhas no plano Free
+                  Máximo {maxRows.toLocaleString('pt-BR')} linhas disponíveis no seu plano
                 </p>
               </div>
             </>
@@ -442,7 +502,7 @@ function ConnectModal({ sourceType, onClose, onSuccess }: {
                 />
                 <div className="mt-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <p className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">
-                    ⚠️ Plano Free: A planilha precisa estar pública
+                    ⚠️ Plano atual: a planilha precisa estar pública
                   </p>
                   <ol className="text-sm text-blue-800 dark:text-blue-300 space-y-1 ml-4 list-decimal">
                     <li>Abra sua planilha no Google Sheets</li>
@@ -521,6 +581,115 @@ function ConnectModal({ sourceType, onClose, onSuccess }: {
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  )
+}
+
+function DataPreviewModal({
+  source,
+  data,
+  loading,
+  error,
+  onClose,
+}: {
+  source: DataSource
+  data: DataSourceData | null
+  loading: boolean
+  error: string
+  onClose: () => void
+}) {
+  const columns = data?.columns ?? []
+  const rows = data?.rows ?? []
+  const totalRows = data?.total_rows ?? rows.length
+  const previewRows = rows.slice(0, 20)
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-700 flex items-start justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+              {source.name}
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Visualização dos primeiros registros • {totalRows} linha{totalRows === 1 ? '' : 's'}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-xl"
+          >
+            ✖
+          </button>
+        </div>
+
+        <div className="px-8 py-4 flex-1 overflow-hidden">
+          {loading ? (
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center">
+                <RefreshCw className="h-10 w-10 animate-spin text-blue-600 mx-auto mb-3" />
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Carregando dados da fonte...
+                </p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+              <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+            </div>
+          ) : columns.length === 0 ? (
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+              <Database className="h-10 w-10 text-gray-400 mx-auto mb-3" />
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Nenhum dado disponível para visualização.
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-100 dark:bg-gray-800 sticky top-0">
+                  <tr>
+                    {columns.map((column) => (
+                      <th
+                        key={column}
+                        className="px-4 py-2 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider"
+                      >
+                        {column}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+                  {previewRows.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                      {columns.map((column) => (
+                        <td
+                          key={column}
+                          className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 whitespace-nowrap"
+                        >
+                          {String(row[column] ?? '')}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Exibindo até 20 linhas para visualização rápida.
+          </p>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold"
+          >
+            Fechar
+          </button>
+        </div>
       </div>
     </div>
   )

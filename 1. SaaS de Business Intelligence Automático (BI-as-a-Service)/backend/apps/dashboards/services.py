@@ -34,19 +34,54 @@ class DashboardService:
                 col_types['date'].append(col)
             # Tentar converter para data se parecer uma data
             else:
-                try:
-                    sample = df[col].dropna().head(5)
-                    parsed = pd.to_datetime(sample, errors='raise')
-                    col_types['date'].append(col)
-                except:
-                    # Se não for data, verificar se é boolean
-                    unique_values = df[col].nunique()
-                    if unique_values == 2:
-                        col_types['boolean'].append(col)
-                    else:
-                        col_types['categorical'].append(col)
+                parse_kwargs = self._infer_datetime_parse_kwargs(df[col])
+                if parse_kwargs:
+                    df[col] = pd.to_datetime(
+                        df[col],
+                        errors='coerce',
+                        **parse_kwargs,
+                    )
+                    if df[col].notna().any():
+                        col_types['date'].append(col)
+                        continue
+
+                # Se não for data, verificar se é boolean
+                unique_values = df[col].nunique(dropna=True)
+                if unique_values == 2:
+                    col_types['boolean'].append(col)
+                else:
+                    col_types['categorical'].append(col)
         
         return col_types
+
+    def _infer_datetime_parse_kwargs(self, series):
+        """Tenta identificar argumentos consistentes para converter a série em datetime sem emitir warnings."""
+        import re
+
+        sample = series.dropna().astype(str).head(8)
+        if sample.empty:
+            return None
+
+        # Heurística: só tentar parse se a maioria dos itens parecem datas
+        date_like_pattern = re.compile(r"^(\d{4}[\-/]\d{1,2}[\-/]\d{1,2}|\d{1,2}[\-/]\d{1,2}[\-/]\d{2,4}|\d{8})$")
+        date_like_count = sum(1 for s in sample if date_like_pattern.match(s.strip()))
+        if date_like_count < max(2, len(sample) // 2):
+            return None
+
+        candidate_formats = [
+            '%Y-%m-%d', '%Y/%m/%d', '%d/%m/%Y', '%d-%m-%Y', '%d.%m.%Y',
+            '%m/%d/%Y', '%m-%d-%Y', '%Y%m%d', '%d%m%Y'
+        ]
+
+        for fmt in candidate_formats:
+            try:
+                pd.to_datetime(sample, format=fmt, errors='raise')
+                return {'format': fmt}
+            except Exception:
+                continue
+
+        # Sem formato confiável → não tentar inferências genéricas para evitar warnings
+        return None
     
     def _detect_value_column(self, df, numeric_cols):
         """Detecta qual coluna numérica é o valor principal (preço, valor, etc)"""
@@ -290,16 +325,26 @@ class DashboardService:
                 df_copy = df_copy.dropna(subset=[date_col])
                 
                 if len(df_copy) > 0:
-                    df_copy['month'] = df_copy[date_col].dt.strftime('%b')
-                    sales_by_month = df_copy.groupby('month')[value_col].sum()
-                    
-                    month_order_pt = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
-                                      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-                    
+                    df_copy['year'] = df_copy[date_col].dt.year
+                    df_copy['month_num'] = df_copy[date_col].dt.month
+                    month_labels_pt = {
+                        1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun',
+                        7: 'Jul', 8: 'Ago', 9: 'Set', 10: 'Out', 11: 'Nov', 12: 'Dez'
+                    }
+
+                    sales_by_month = (
+                        df_copy.groupby(['year', 'month_num'])[value_col]
+                        .sum()
+                        .reset_index()
+                        .sort_values(['year', 'month_num'])
+                    )
+
                     sales_evolution = [
-                        {'month': month, 'value': float(sales_by_month.get(month, 0))}
-                        for month in month_order_pt
-                        if month in sales_by_month.index
+                        {
+                            'month': f"{month_labels_pt.get(int(row['month_num']), str(int(row['month_num'])))} {int(row['year'])}",
+                            'value': float(row[value_col])
+                        }
+                        for _, row in sales_by_month.iterrows()
                     ]
             
             # GRÁFICO: Top produtos

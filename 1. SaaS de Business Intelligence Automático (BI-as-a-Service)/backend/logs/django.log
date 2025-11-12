@@ -2209,3 +2209,72 @@ INFO 2025-11-09 21:31:23,034 basehttp "GET /api/dashboards/9/ HTTP/1.1" 200 2829
 INFO 2025-11-09 21:31:23,070 basehttp "GET /api/dashboards/9/data/ HTTP/1.1" 200 2546
 INFO 2025-11-09 21:31:23,070 basehttp "OPTIONS /api/dashboards/9/data/ HTTP/1.1" 200 0
 INFO 2025-11-09 21:31:23,131 basehttp "GET /api/dashboards/9/data/ HTTP/1.1" 200 2546
+INFO 2025-11-09 23:45:09,837 autoreload Watching for file changes with StatReloader
+INFO 2025-11-09 23:45:41,351 basehttp "OPTIONS /api/datasources/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:45:41,353 basehttp "OPTIONS /api/datasources/ HTTP/1.1" 200 0
+WARNING 2025-11-09 23:45:41,386 log Unauthorized: /api/datasources/
+WARNING 2025-11-09 23:45:41,386 basehttp "GET /api/datasources/ HTTP/1.1" 401 172
+WARNING 2025-11-09 23:45:41,390 log Unauthorized: /api/datasources/
+INFO 2025-11-09 23:45:41,391 basehttp "OPTIONS /api/auth/refresh/ HTTP/1.1" 200 0
+WARNING 2025-11-09 23:45:41,392 basehttp "GET /api/datasources/ HTTP/1.1" 401 172
+INFO 2025-11-09 23:45:41,394 basehttp "POST /api/auth/refresh/ HTTP/1.1" 200 244
+INFO 2025-11-09 23:45:41,397 basehttp "POST /api/auth/refresh/ HTTP/1.1" 200 244
+INFO 2025-11-09 23:45:41,413 basehttp "GET /api/datasources/ HTTP/1.1" 200 1402
+INFO 2025-11-09 23:45:41,424 basehttp "GET /api/datasources/ HTTP/1.1" 200 1402
+INFO 2025-11-09 23:45:44,810 basehttp "OPTIONS /api/datasources/11/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:45:44,834 basehttp "DELETE /api/datasources/11/ HTTP/1.1" 204 0
+INFO 2025-11-09 23:45:44,849 basehttp "GET /api/datasources/ HTTP/1.1" 200 52
+INFO 2025-11-09 23:45:50,128 basehttp "OPTIONS /api/datasources/upload_csv/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:45:50,190 basehttp "POST /api/datasources/upload_csv/ HTTP/1.1" 201 1530
+INFO 2025-11-09 23:45:52,859 basehttp "OPTIONS /api/dashboards/10/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:45:52,859 basehttp "OPTIONS /api/dashboards/10/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:45:52,955 basehttp "GET /api/dashboards/10/ HTTP/1.1" 200 2832
+INFO 2025-11-09 23:45:52,958 basehttp "OPTIONS /api/dashboards/10/data/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:45:53,012 basehttp "GET /api/dashboards/10/ HTTP/1.1" 200 2832
+INFO 2025-11-09 23:45:53,027 basehttp "GET /api/dashboards/10/data/ HTTP/1.1" 200 2546
+INFO 2025-11-09 23:45:53,071 basehttp "GET /api/dashboards/10/data/ HTTP/1.1" 200 2546
+INFO 2025-11-09 23:47:49,404 autoreload C:\Users\leona\OneDrive\Documentos\Projetos\SaaS\1. SaaS de Business Intelligence Automático (BI-as-a-Service)\backend\apps\dashboards\services.py changed, reloading.
+INFO 2025-11-09 23:47:50,449 autoreload Watching for file changes with StatReloader
+INFO 2025-11-09 23:48:09,282 autoreload C:\Users\leona\OneDrive\Documentos\Projetos\SaaS\1. SaaS de Business Intelligence Automático (BI-as-a-Service)\backend\apps\dashboards\services.py changed, reloading.
+INFO 2025-11-09 23:48:10,201 autoreload Watching for file changes with StatReloader
+INFO 2025-11-09 23:48:27,678 basehttp "GET /api/dashboards/10/ HTTP/1.1" 200 2837
+INFO 2025-11-09 23:48:27,722 basehttp "GET /api/dashboards/10/ HTTP/1.1" 200 2837
+INFO 2025-11-09 23:48:27,758 basehttp "GET /api/dashboards/10/data/ HTTP/1.1" 200 2551
+INFO 2025-11-09 23:48:27,819 basehttp "GET /api/dashboards/10/data/ HTTP/1.1" 200 2551
+INFO 2025-11-09 23:51:56,977 autoreload Watching for file changes with StatReloader
+INFO 2025-11-09 23:52:00,139 basehttp "GET /api/datasources/ HTTP/1.1" 200 1403
+INFO 2025-11-09 23:52:00,156 basehttp "GET /api/datasources/ HTTP/1.1" 200 1403
+INFO 2025-11-09 23:52:02,576 basehttp "OPTIONS /api/datasources/12/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:52:02,592 basehttp "DELETE /api/datasources/12/ HTTP/1.1" 204 0
+INFO 2025-11-09 23:52:02,617 basehttp "GET /api/datasources/ HTTP/1.1" 200 52
+INFO 2025-11-09 23:52:09,020 basehttp "POST /api/datasources/upload_csv/ HTTP/1.1" 201 1530
+INFO 2025-11-09 23:52:11,687 basehttp "OPTIONS /api/dashboards/11/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:52:11,817 basehttp "GET /api/dashboards/11/ HTTP/1.1" 200 2837
+INFO 2025-11-09 23:52:11,821 basehttp "OPTIONS /api/dashboards/11/data/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:52:11,961 basehttp "GET /api/dashboards/11/ HTTP/1.1" 200 2837
+INFO 2025-11-09 23:52:11,961 basehttp "GET /api/dashboards/11/data/ HTTP/1.1" 200 2551
+INFO 2025-11-09 23:52:12,047 basehttp "GET /api/dashboards/11/data/ HTTP/1.1" 200 2551
+INFO 2025-11-09 23:54:18,738 autoreload C:\Users\leona\OneDrive\Documentos\Projetos\SaaS\1. SaaS de Business Intelligence Automático (BI-as-a-Service)\backend\apps\dashboards\services.py changed, reloading.
+INFO 2025-11-09 23:54:19,702 autoreload Watching for file changes with StatReloader
+INFO 2025-11-09 23:54:24,204 autoreload C:\Users\leona\OneDrive\Documentos\Projetos\SaaS\1. SaaS de Business Intelligence Automático (BI-as-a-Service)\backend\apps\dashboards\services.py changed, reloading.
+INFO 2025-11-09 23:54:24,977 autoreload Watching for file changes with StatReloader
+INFO 2025-11-09 23:54:43,423 autoreload Watching for file changes with StatReloader
+INFO 2025-11-09 23:54:47,885 basehttp "GET /api/dashboards/11/ HTTP/1.1" 200 2837
+INFO 2025-11-09 23:54:47,933 basehttp "GET /api/dashboards/11/ HTTP/1.1" 200 2837
+INFO 2025-11-09 23:54:47,967 basehttp "GET /api/dashboards/11/data/ HTTP/1.1" 200 2551
+INFO 2025-11-09 23:54:48,020 basehttp "GET /api/dashboards/11/data/ HTTP/1.1" 200 2551
+INFO 2025-11-09 23:55:15,678 basehttp "OPTIONS /api/auth/login/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:55:16,224 basehttp "POST /api/auth/login/ HTTP/1.1" 200 898
+INFO 2025-11-09 23:55:20,910 basehttp "GET /api/datasources/ HTTP/1.1" 200 1403
+INFO 2025-11-09 23:55:20,918 basehttp "GET /api/datasources/ HTTP/1.1" 200 1403
+INFO 2025-11-09 23:55:26,536 basehttp "OPTIONS /api/datasources/13/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:55:26,560 basehttp "DELETE /api/datasources/13/ HTTP/1.1" 204 0
+INFO 2025-11-09 23:55:26,583 basehttp "GET /api/datasources/ HTTP/1.1" 200 52
+INFO 2025-11-09 23:55:34,278 basehttp "POST /api/datasources/upload_csv/ HTTP/1.1" 201 1527
+INFO 2025-11-09 23:55:36,964 basehttp "OPTIONS /api/dashboards/12/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:55:36,966 basehttp "OPTIONS /api/dashboards/12/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:55:37,023 basehttp "GET /api/dashboards/12/ HTTP/1.1" 200 2835
+INFO 2025-11-09 23:55:37,028 basehttp "OPTIONS /api/dashboards/12/data/ HTTP/1.1" 200 0
+INFO 2025-11-09 23:55:37,122 basehttp "GET /api/dashboards/12/data/ HTTP/1.1" 200 2551
+INFO 2025-11-09 23:55:37,124 basehttp "GET /api/dashboards/12/ HTTP/1.1" 200 2835
+INFO 2025-11-09 23:55:37,186 basehttp "GET /api/dashboards/12/data/ HTTP/1.1" 200 2551

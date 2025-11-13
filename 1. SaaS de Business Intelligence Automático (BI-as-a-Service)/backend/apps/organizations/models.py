@@ -112,7 +112,12 @@ class Organization(models.Model):
     
     def get_dashboard_count(self):
         """Get number of dashboards in organization."""
-        return self.dashboards.count()
+        # Dashboards de pré-visualização não contam para limite
+        # Se a coluna ainda não existir (migration pendente), faça fallback sem o filtro
+        try:
+            return self.dashboards.filter(is_preview=False).count()
+        except Exception:
+            return self.dashboards.count()
     
     def get_datasource_count(self):
         """Get number of data sources in organization."""

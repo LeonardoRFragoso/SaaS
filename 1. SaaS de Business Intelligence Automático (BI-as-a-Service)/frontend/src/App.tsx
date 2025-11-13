@@ -12,6 +12,7 @@ import DashboardView from './pages/DashboardView'
 import DataSources from './pages/DataSources'
 import Insights from './pages/Insights'
 import Reports from './pages/Reports'
+import PublicPreview from './pages/PublicPreview'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/demo" element={<Demo />} />
+        <Route path="/public" element={<PublicPreview />} />
 
         {/* Protected routes with layout */}
         <Route element={<Layout />}>

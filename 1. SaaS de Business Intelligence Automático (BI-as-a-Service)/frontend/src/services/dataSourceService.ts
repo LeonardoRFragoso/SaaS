@@ -22,6 +22,7 @@ export interface DataSourceData {
   columns: string[]
   rows: any[]
   total_rows: number
+  sheets?: { gid: number; title: string; columns: string[]; sample_rows: any[] }[]
 }
 
 export interface PaginatedDataSources {
@@ -76,6 +77,12 @@ export const dataSourceService = {
   // Obter dados da fonte
   async getData(id: number): Promise<DataSourceData> {
     const response = await api.get(`/datasources/${id}/data/`)
+    return response.data
+  },
+
+  // Obter schema (abas e colunas)
+  async getSchema(id: number): Promise<{ sheets: { gid: number; title: string; columns: string[]; sample_rows: any[] }[] }> {
+    const response = await api.get(`/datasources/${id}/schema/`)
     return response.data
   },
 

@@ -50,8 +50,29 @@ class DataSourceService:
         try:
             # URL pública do Google Sheets em formato CSV
             # Funciona apenas se a planilha estiver com acesso público
-            csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
-            df = pd.read_csv(csv_url)
+            gid = self._extract_gid(url)
+            urls_to_try = [
+                f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}",
+                f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv",
+                f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid=0",
+            ]
+            last_error = None
+            df = None
+            used_gid = gid
+            for u in urls_to_try:
+                try:
+                    df = pd.read_csv(u)
+                    if 'gid=' in u:
+                        try:
+                            used_gid = int(u.split('gid=')[1].split('&')[0])
+                        except Exception:
+                            used_gid = gid
+                    break
+                except Exception as e:
+                    last_error = e
+                    continue
+            if df is None:
+                raise last_error
             
             # Verificar limite de linhas
             if len(df) > organization.max_data_rows:
@@ -65,6 +86,23 @@ class DataSourceService:
             data_json = df.to_dict('records')
             columns = df.columns.tolist()
             
+            # Detectar múltiplas abas (tentativa heurística via gids 0..10)
+            sheets = []
+            for gid in range(0, 11):
+                try:
+                    test_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
+                    sample_df = pd.read_csv(test_url, nrows=5)
+                    if sample_df.shape[1] > 0:
+                        sheets.append({
+                            'gid': gid,
+                            'title': f'Aba {gid}',
+                            'columns': sample_df.columns.tolist()
+                        })
+                except Exception:
+                    continue
+            if not sheets:
+                sheets = [{'gid': 0, 'title': 'Aba 0', 'columns': columns}]
+            
             datasource = DataSource.objects.create(
                 organization=organization,
                 created_by=user,
@@ -73,8 +111,10 @@ class DataSourceService:
                 connection_config={
                     'url': url,
                     'sheet_id': sheet_id,
+                    'primary_gid': used_gid,
                     'columns': columns,
                     'data': data_json,
+                    'sheets': sheets,
                     'access_type': 'public',  # Free plan usa acesso público
                 },
                 is_active=True,
@@ -101,6 +141,11 @@ class DataSourceService:
                 raise ValueError(
                     'Planilha não encontrada. Verifique se a URL está correta.'
                 )
+            elif '400' in error_msg or 'Bad Request' in error_msg:
+                raise ValueError(
+                    'Erro 400 ao acessar o Google Sheets. Verifique se a URL é de uma planilha (docs.google.com/spreadsheets/d/...) '
+                    'e se está com acesso "Qualquer pessoa com o link". Caso haja várias abas, copie o link com o #gid da aba desejada.'
+                )
             else:
                 raise ValueError(f'Erro ao conectar Google Sheets: {error_msg}')
     
@@ -118,9 +163,10 @@ class DataSourceService:
         """Sincronizar Google Sheets"""
         config = datasource.connection_config
         sheet_id = config.get('sheet_id')
+        gid = config.get('primary_gid', 0)
         
         try:
-            csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+            csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
             df = pd.read_csv(csv_url)
             
             # Verificar limite de linhas
@@ -147,11 +193,13 @@ class DataSourceService:
         config = datasource.connection_config
         data = config.get('data', [])
         columns = config.get('columns', [])
+        sheets = config.get('sheets', [])
         
         return {
             'columns': columns,
             'rows': data,
             'total_rows': len(data),
+            'sheets': sheets,
         }
     
     def _extract_sheet_id(self, url):
@@ -163,3 +211,11 @@ class DataSourceService:
                 sheet_id = parts[1].split('/')[0]
                 return sheet_id
         raise ValueError('URL do Google Sheets inválida')
+
+    def _extract_gid(self, url):
+        if '#gid=' in url:
+            try:
+                return int(url.split('#gid=')[1].split('&')[0])
+            except Exception:
+                return 0
+        return 0

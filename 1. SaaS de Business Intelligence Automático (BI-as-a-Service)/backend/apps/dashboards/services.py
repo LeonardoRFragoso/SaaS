@@ -254,8 +254,17 @@ class DashboardService:
         
         return additional
     
-    def get_dashboard_data(self, dashboard):
-        """Obter dados processados do dashboard"""
+    def get_dashboard_data(self, dashboard, options=None):
+        """Obter dados processados do dashboard
+        
+        options:
+            period: '30d' | '90d' | 'ytd'
+            compare: bool
+        """
+        options = options or {}
+        period = options.get('period') or '30d'
+        compare = bool(options.get('compare'))
+        
         # Obter primeira fonte de dados
         datasource = dashboard.datasources.first()
         if not datasource:
@@ -267,16 +276,40 @@ class DashboardService:
         
         # Criar DataFrame
         df = pd.DataFrame(source_data['rows'])
+        if not df.empty:
+            # Tentar identificar coluna de data principal para filtrar período
+            col_types = self._detect_column_types(df.copy())
+            date_col = col_types['date'][0] if col_types['date'] else None
+            if date_col:
+                df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
+                df = df.dropna(subset=[date_col])
+                if period in ('30d', '90d'):
+                    days = 30 if period == '30d' else 90
+                    start = timezone.now() - timezone.timedelta(days=days)
+                    df = df[df[date_col] >= start]
+                elif period == 'ytd':
+                    start = pd.Timestamp(year=timezone.now().year, month=1, day=1, tz=timezone.now().tzinfo)
+                    df = df[df[date_col] >= start]
         
-        # Processar dados
+        # Processar dados (considerar mapeamento manual)
+        override_mapping = options.get('override_mapping') if options else None
+        column_mapping = override_mapping if override_mapping else (dashboard.config or {}).get('column_mapping', {})
         if dashboard.template == 'sales':
-            return self._process_sales_simple(df)
+            result = self._process_sales_simple(df, mapping=column_mapping)
         elif dashboard.template == 'financial':
-            return self._process_financial_simple(df)
+            result = self._process_financial_simple(df)
         else:
-            return self._get_empty_data(dashboard.template)
+            result = self._get_empty_data(dashboard.template)
+        
+        # Enriquecimento: diagnóstico executivo, benchmark e metas
+        result['executive_summary'] = self._build_executive_summary(result, compare=compare)
+        result['benchmark'] = self._estimate_benchmark(dashboard, result)
+        result['goals'] = self._compute_goals_progress(dashboard, result)
+        result['impact_estimates'] = self._estimate_impact(result)
+        result.setdefault('metadata', {})['options'] = {'period': period, 'compare': compare}
+        return result
     
-    def _process_sales_simple(self, df):
+    def _process_sales_simple(self, df, mapping=None):
         """Processar dados de vendas"""
         try:
             if df.empty:
@@ -284,16 +317,23 @@ class DashboardService:
             
             # DETECÇÃO AUTOMÁTICA
             col_types = self._detect_column_types(df)
-            value_col = self._detect_value_column(df, col_types['numeric'])
+            # Aplicar mapeamento manual quando fornecido
+            value_col = mapping.get('value') if mapping else None
+            if value_col and value_col not in df.columns:
+                value_col = None
+            if not value_col:
+                value_col = self._detect_value_column(df, col_types['numeric'])
             
             if not value_col:
                 return self._get_empty_data('sales')
             
-            qty_col = self._detect_quantity_column(df, col_types['numeric'], value_col)
-            date_col = col_types['date'][0] if col_types['date'] else None
+            qty_col = mapping.get('quantity') if (mapping and mapping.get('quantity') in df.columns) else None
+            if not qty_col:
+                qty_col = self._detect_quantity_column(df, col_types['numeric'], value_col)
+            date_col = mapping.get('date') if (mapping and mapping.get('date') in df.columns) else (col_types['date'][0] if col_types['date'] else None)
             
             # Detectar produto
-            product_col = None
+            product_col = mapping.get('product') if (mapping and mapping.get('product') in df.columns) else None
             if col_types['categorical']:
                 for col in col_types['categorical']:
                     col_lower = col.lower()
@@ -476,6 +516,108 @@ class DashboardService:
         except Exception as e:
             return self._get_empty_data('financial')
     
+    def _build_executive_summary(self, processed, compare=False):
+        """Monta diagnóstico executivo com crescimento e termômetro de qualidade."""
+        kpis = processed.get('kpis', {})
+        charts = processed.get('charts', {})
+        problems = processed.get('data_quality', []) or []
+        
+        growth = 0.0
+        sales_evolution = charts.get('sales_evolution') or []
+        if len(sales_evolution) >= 2:
+            last = sales_evolution[-1]['value']
+            prev = sales_evolution[-2]['value']
+            if prev > 0:
+                growth = ((last - prev) / prev) * 100
+        # Score de qualidade simples: menos problemas => maior
+        quality_score = max(20, 100 - len(problems) * 15) if problems else 90
+        level = 'good' if quality_score >= 75 else ('ok' if quality_score >= 50 else 'poor')
+        
+        summary = {
+            'headline_growth_pct': round(growth, 1),
+            'avg_ticket': round(kpis.get('avg_ticket', 0), 2),
+            'total_revenue': round(kpis.get('total_revenue', 0), 2),
+            'total_customers': int(kpis.get('total_customers', 0)),
+            'data_quality_score': quality_score,
+            'data_quality_level': level,
+        }
+        if compare:
+            summary['comparison_enabled'] = True
+        return summary
+    
+    def _estimate_benchmark(self, dashboard, processed):
+        """Benchmark estimado por setor: percentil com base em ticket médio simples."""
+        sector = getattr(dashboard.organization, 'industry', 'other') or 'other'
+        base_means = {
+            'retail': 150.0, 'ecommerce': 220.0, 'services': 300.0,
+            'technology': 450.0, 'marketing': 350.0, 'logistics': 400.0,
+            'manufacturing': 380.0, 'accounting': 280.0, 'other': 250.0
+        }
+        mean = base_means.get(sector, 250.0)
+        std = max(30.0, mean * 0.25)
+        avg_ticket = processed.get('kpis', {}).get('avg_ticket', 0.0)
+        # percentil aproximado usando CDF normal heurística
+        try:
+            z = (avg_ticket - mean) / std
+            percentile = int(max(1, min(99, round(50 * (1 + np.math.erf(z / np.sqrt(2)))))))
+        except Exception:
+            percentile = 50
+        return {
+            'industry': sector,
+            'avg_ticket_vs_industry_percentile': percentile,
+            'industry_avg_ticket_estimate': mean,
+        }
+    
+    def _compute_goals_progress(self, dashboard, processed):
+        """Calcula progresso de metas usando kpis atuais."""
+        goals = dashboard.config.get('goals', {})
+        if not goals:
+            return {'defined': False, 'items': []}
+        items = []
+        kpis = processed.get('kpis', {})
+        for metric, cfg in goals.items():
+            target = float(cfg.get('target', 0))
+            current = float(kpis.get('total_revenue' if metric == 'revenue' else 'avg_ticket', 0))
+            progress = (current / target * 100) if target > 0 else 0
+            items.append({
+                'metric': metric,
+                'target': target,
+                'current': current,
+                'progress_pct': round(progress, 1),
+                'deadline': cfg.get('deadline'),
+            })
+        return {'defined': True, 'items': items}
+    
+    def _estimate_impact(self, processed):
+        """Estimativas simples de impacto financeiro para despertar interesse."""
+        revenue = processed.get('kpis', {}).get('total_revenue', 0.0)
+        avg_ticket = processed.get('kpis', {}).get('avg_ticket', 0.0)
+        return {
+            'recover_inactive_customers': round(revenue * 0.08, 2),
+            'optimize_discounts': round(revenue * 0.04, 2),
+            'increase_avg_ticket_5pct': round(avg_ticket * 0.05 * max(1, processed.get('kpis', {}).get('total_customers', 1)), 2),
+        }
+    
+    def answer_question(self, dashboard, question):
+        """Responde perguntas curtas com base nos dados processados."""
+        data = self.get_dashboard_data(dashboard, options={'period': '90d', 'compare': True})
+        kpis = data.get('kpis', {})
+        if 'faturamento' in question.lower() or 'receita' in question.lower():
+            text = f"Faturamento no período: R$ {kpis.get('total_revenue', 0):,.2f}."
+        elif 'ticket' in question.lower():
+            text = f"Ticket médio: R$ {kpis.get('avg_ticket', 0):,.2f}."
+        elif 'clientes' in question.lower():
+            text = f"Total de clientes/transações: {int(kpis.get('total_customers', 0))}."
+        else:
+            text = "Aqui está um resumo: " \
+                   f"Faturamento R$ {kpis.get('total_revenue', 0):,.2f}, " \
+                   f"Ticket médio R$ {kpis.get('avg_ticket', 0):,.2f}."
+        actions = [
+            {'label': 'Criar alerta de queda', 'action': 'upgrade_required'},
+            {'label': 'Exportar PDF', 'action': 'export_summary'},
+            {'label': 'Explorar por categoria', 'action': 'apply_filter_category'}
+        ]
+        return {'text': text, 'suggested_actions': actions}
     def _get_empty_data(self, template):
         """Retorna estrutura vazia"""
         if template == 'sales':

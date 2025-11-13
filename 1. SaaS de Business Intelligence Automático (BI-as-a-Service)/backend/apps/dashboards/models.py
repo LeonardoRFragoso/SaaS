@@ -43,6 +43,13 @@ class Dashboard(models.Model):
         blank=True
     )
     
+    # Compartilhamento público com expiração (prévia)
+    public_preview_token = models.CharField(_('token de pré-visualização pública'), max_length=64, blank=True, default='')
+    public_preview_expires_at = models.DateTimeField(_('expira em'), null=True, blank=True)
+    
+    # Preview flag (não conta no limite de planos e não aparece na lista)
+    is_preview = models.BooleanField(_('pré-visualização'), default=False)
+    
     # Timestamps
     created_at = models.DateTimeField(_('criado em'), auto_now_add=True)
     updated_at = models.DateTimeField(_('atualizado em'), auto_now=True)

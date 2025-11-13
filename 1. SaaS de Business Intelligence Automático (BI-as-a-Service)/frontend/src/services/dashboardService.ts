@@ -59,7 +59,7 @@ export interface PaginatedDashboards {
 export const dashboardService = {
   // Listar dashboards
   async list(): Promise<PaginatedDashboards> {
-    const response = await api.get('/dashboards/')
+    const response = await api.get('/dashboards/', { params: { include_preview: 1 } })
     if (response.data?.results) {
       return response.data
     }
@@ -95,8 +95,11 @@ export const dashboardService = {
   },
 
   // Obter dados processados do dashboard
-  async getData(id: number): Promise<DashboardData> {
-    const response = await api.get(`/dashboards/${id}/data/`)
+  async getData(id: number, opts?: { period?: '30d' | '90d' | 'ytd'; compare?: boolean }): Promise<DashboardData> {
+    const params: any = {}
+    if (opts?.period) params.period = opts.period
+    if (opts?.compare) params.compare = 1
+    const response = await api.get(`/dashboards/${id}/data/`, { params })
     return response.data
   },
 
@@ -111,5 +114,50 @@ export const dashboardService = {
   // Deletar dashboard
   async delete(id: number): Promise<void> {
     await api.delete(`/dashboards/${id}/`)
+  },
+
+  // Compartilhar pré-visualização pública
+  async sharePreview(id: number): Promise<{ token: string; expires_at: string }> {
+    const response = await api.post(`/dashboards/${id}/share_preview/`)
+    return response.data
+  },
+
+  // Definir meta
+  async setGoal(id: number, data: { metric: 'revenue' | 'avg_ticket'; target: number; deadline?: string }) {
+    const response = await api.post(`/dashboards/${id}/set_goal/`, data)
+    return response.data
+  },
+
+  // Adicionar nota a um gráfico
+  async addNote(id: number, data: { chart_key: string; text: string }) {
+    const response = await api.post(`/dashboards/${id}/add_note/`, data)
+    return response.data
+  },
+
+  // Pergunte à IA
+  async ask(id: number, question: string) {
+    const response = await api.post(`/dashboards/${id}/ask/`, { question })
+    return response.data
+  },
+
+  // Visualização pública (token)
+  async getPublic(token: string) {
+    const response = await api.get('/dashboards/public/', { params: { token } })
+    return response.data
+  },
+
+  // Pré-visualizar mapeamento sem salvar
+  async previewMapping(id: number, mapping: { [k: string]: string | undefined }, opts?: { period?: '30d' | '90d' | 'ytd'; compare?: boolean }) {
+    const payload: any = { mapping }
+    if (opts?.period) payload.period = opts.period
+    if (opts?.compare) payload.compare = true
+    const response = await api.post(`/dashboards/${id}/preview_mapping/`, payload)
+    return response.data
+  },
+
+  // Remover dashboards órfãos (sem fonte)
+  async cleanupOrphans(): Promise<{ deleted: number }> {
+    const response = await api.post('/dashboards/cleanup_orphans/')
+    return response.data
   },
 }

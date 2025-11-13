@@ -8,6 +8,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
     user_count = serializers.IntegerField(source='get_user_count', read_only=True)
     dashboard_count = serializers.IntegerField(source='get_dashboard_count', read_only=True)
     datasource_count = serializers.IntegerField(source='get_datasource_count', read_only=True)
+    ai_insights_used_this_month = serializers.IntegerField(read_only=True)
     
     class Meta:
         model = Organization
@@ -18,6 +19,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
             'subscription_active', 'max_users', 'max_dashboards',
             'max_datasources', 'max_data_rows', 'max_ai_insights_per_month', 'settings',
             'user_count', 'dashboard_count', 'datasource_count',
+            'ai_insights_used_this_month',
             'created_at', 'updated_at', 'is_active'
         )
         read_only_fields = ('id', 'slug', 'created_at', 'updated_at')

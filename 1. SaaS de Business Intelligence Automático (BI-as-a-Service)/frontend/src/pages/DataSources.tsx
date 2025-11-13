@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Database, FileSpreadsheet, Upload, Link as LinkIcon, Lock, CheckCircle, XCircle, RefreshCw, Trash2, BarChart3, Table } from 'lucide-react'
 import UpgradeModal from '../components/UpgradeModal'
+import UsageLimits from '../components/UsageLimits'
 import { dataSourceService, type DataSource, type DataSourceData } from '../services/dataSourceService'
 import { organizationService } from '../services/organizationService'
 import type { Organization } from '../types'
@@ -179,6 +180,25 @@ export default function DataSources() {
           </p>
         </div>
       </div>
+
+      {/* Usage Limits */}
+      {organization && (
+        <div className="mb-8">
+          <UsageLimits
+            limits={{
+              plan: organization.plan,
+              max_dashboards: organization.max_dashboards,
+              max_datasources: organization.max_datasources,
+              max_ai_insights_per_month: organization.max_ai_insights_per_month,
+            }}
+            usage={{
+              dashboards: organization.dashboard_count ?? 0,
+              datasources: dataSourcesCount,
+              ai_insights_this_month: (organization as any).ai_insights_used_this_month ?? 0,
+            }}
+          />
+        </div>
+      )}
 
       {/* Limit Warning */}
       {dataSourcesCount >= dataSourceLimit && (
@@ -530,7 +550,7 @@ function ConnectModal({
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2" />
                 <p className="text-sm text-green-800 dark:text-green-300 font-semibold">
                   {uploadResponse?.dashboard_created 
-                    ? '🎉 Dashboard criado automaticamente!' 
+                    ? (uploadResponse?.is_preview ? '✨ Pré-visualização criada!' : '🎉 Dashboard criado automaticamente!')
                     : 'Fonte de dados conectada com sucesso! ✅'
                   }
                 </p>
